@@ -169,19 +169,27 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 
 ### **Sebastián Sosa** (`Animas-Ss`) — Setup, conexión y migración de configuración
 
-- [ ] Instalar dependencias: `mongoose`, `dotenv` (verificar versión)
-- [ ] Crear archivo `.env` con `PORT` y `MONGODB_URI` (local y Atlas)
-- [ ] Crear archivo `.env.example` para documentar las variables necesarias
-- [ ] Actualizar `src/config/app.config.js`: leer `MONGODB_URI` desde `process.env`, exportar función `connectDB()`
+- [ ] Instalar dependencias: `mongoose` (`npm install mongoose`)
+- [ ] Crear archivo `.env` con `PORT` y `MONGODB_URI` apuntando a instancia local:
+  ```
+  PORT=3000
+  MONGODB_URI=mongodb://localhost:27017/talento-evolutivo
+  ```
+- [ ] Crear archivo `.env.example` con las mismas variables pero sin valores sensibles
+- [ ] Agregar `.env` al `.gitignore` (nunca subir credenciales al repo)
+- [ ] Actualizar `src/config/app.config.js`: leer `MONGODB_URI` desde `process.env`, exportar función `connectDB()` usando `mongoose.connect()`
 - [ ] Actualizar `src/index.js`: llamar a `connectDB()` al iniciar la app con manejo de error (proceso termina si no conecta)
 - [ ] Agregar script `"seed"` en `package.json` para poblar la base de datos con datos de prueba
-- [ ] Actualizar el `README.md` principal con instrucciones de instalación y configuración de MongoDB
+- [ ] Actualizar el `README.md` principal con instrucciones de instalación de MongoDB local y configuración
+
+> ⚠️ **Requisito previo para todo el equipo:** cada integrante debe tener instalado **MongoDB Community Server** ([mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)) y el servicio corriendo localmente antes de levantar la app. Se recomienda también instalar **MongoDB Compass** para visualizar los datos (útil para el video).
 
 **Entregables clave:**
 - `src/config/app.config.js` con `connectDB()`
 - `.env.example`
+- `.gitignore` actualizado
 - `src/index.js` actualizado
-- `README.md` actualizado con sección de MongoDB
+- `README.md` actualizado con sección de MongoDB local
 
 ---
 
