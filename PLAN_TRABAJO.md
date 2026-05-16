@@ -122,21 +122,208 @@ El sistema deberá organizarse siguiendo una arquitectura modular, validar datos
 - [x] **Documentación OpenAPI:** Generación de archivos YAML para todos los módulos (Empresas, Empleados, Novedades, Seguimientos, Reportes)
 - [x] **Documentación OpenAPI:** Consolidación en `index.yaml` y esquema de errores estandarizado
 - [x] **Coordinación de Entrega:** Creación de guion detallado por clips para la grabación del video
-- [/] Coordinar y editar el video grupal de 10 minutos (En proceso)
+- [x] Coordinar y editar el video grupal de 10 minutos (En proceso)
 
 ---
 
 ## VIDEO - Responsabilidad Grupal (10 minutos)
 
-- [ ] Grabar demostración del flujo completo:
+- [x] Grabar demostración del flujo completo:
   - Crear empresa → Registrar empleados → Registrar novedades → Ver seguimiento → Ver reportes
-- [ ] Mostrar: Estados de novedades (Pendiente → Procesada → Rechazada)
-- [ ] Mostrar: Integración entre módulos (empresa-empleado-novedad-liquidación-socios)
-- [ ] Mostrar: Auditoría registrando todos los cambios
-- [ ] Explicar: Arquitectura modular y buenas prácticas
-- [ ] Explicar: Manejo de errores y validaciones
-- [ ] Editar video (máximo 10 minutos)
-- [ ] Publicar/compartir
+- [x] Mostrar: Estados de novedades (Pendiente → Procesada → Rechazada)
+- [x] Mostrar: Integración entre módulos (empresa-empleado-novedad-liquidación-socios)
+- [x] Mostrar: Auditoría registrando todos los cambios
+- [x] Explicar: Arquitectura modular y buenas prácticas
+- [x] Explicar: Manejo de errores y validaciones
+- [x] Editar video (máximo 10 minutos)
+- [x] Publicar/compartir
+
+---
+
+---
+
+---
+
+# SEGUNDA ENTREGA — Integración con MongoDB y Mongoose
+
+## Contexto de la segunda entrega
+
+La segunda entrega profundiza los contenidos de la materia incorporando **persistencia real con MongoDB** mediante **Mongoose**. El proyecto mantiene la arquitectura modular existente (rutas → controladores → servicios → modelos), pero se reemplaza la capa de persistencia en JSON (`json.store.js` y archivos `*.db.js`) por **schemas y modelos de Mongoose** que interactúan con una base de datos MongoDB local o en la nube (MongoDB Atlas).
+
+### Cambios principales respecto a la Primera Entrega
+
+| Área | Primera Entrega | Segunda Entrega |
+|------|-----------------|-----------------|
+| Persistencia | Archivos JSON (`data/*.json`) | MongoDB con Mongoose |
+| Capa de datos | `json.store.js` + `*.db.js` | Modelos Mongoose (`*.model.js`) |
+| IDs | UUIDs manuales o índices | `ObjectId` de MongoDB |
+| Relaciones | Referencias por ID en JSON | Referencias con `ref` y `populate()` |
+| Conexión DB | — | `mongoose.connect()` en `app.config.js` |
+| Variables de entorno | `PORT` | `PORT`, `MONGODB_URI` |
+
+---
+
+## Tareas de la Segunda Entrega por integrante
+
+---
+
+### **Sebastián Sosa** (`Animas-Ss`) — Setup, conexión y migración de configuración
+
+- [ ] Instalar dependencias: `mongoose`, `dotenv` (verificar versión)
+- [ ] Crear archivo `.env` con `PORT` y `MONGODB_URI` (local y Atlas)
+- [ ] Crear archivo `.env.example` para documentar las variables necesarias
+- [ ] Actualizar `src/config/app.config.js`: leer `MONGODB_URI` desde `process.env`, exportar función `connectDB()`
+- [ ] Actualizar `src/index.js`: llamar a `connectDB()` al iniciar la app con manejo de error (proceso termina si no conecta)
+- [ ] Agregar script `"seed"` en `package.json` para poblar la base de datos con datos de prueba
+- [ ] Actualizar el `README.md` principal con instrucciones de instalación y configuración de MongoDB
+
+**Entregables clave:**
+- `src/config/app.config.js` con `connectDB()`
+- `.env.example`
+- `src/index.js` actualizado
+- `README.md` actualizado con sección de MongoDB
+
+---
+
+### **Florencia Marcazzo** (`Floh2023`) — Modelos Mongoose: Empresa, Empleado, Novedad, Seguimiento, Auditoría
+
+- [ ] Crear `src/models/empresa.js` con schema Mongoose: `nombre`, `cuit`, `activa`, `fechaAlta`, `timestamps`
+- [ ] Crear `src/models/empleado.js` con schema Mongoose: `nombre`, `apellido`, `dni`, `empresaId` (`ref: 'Empresa'`), `activo`, `timestamps`
+- [ ] Crear `src/models/novedad.js` con schema Mongoose: `empleadoId` (`ref: 'Empleado'`), `empresaId` (`ref: 'Empresa'`), `tipo`, `estado` (enum), `descripcion`, `timestamps`
+- [ ] Crear `src/models/seguimiento.js` con schema Mongoose: `novedadId` (`ref: 'Novedad'`), `estado`, `observacion`, `timestamps`
+- [ ] Crear `src/models/auditoria.js` con schema Mongoose: `entidad`, `entidadId`, `accion`, `detalle`, `timestamps`
+- [ ] Reescribir `src/db/empresa.db.js`: reemplazar operaciones JSON por métodos Mongoose (`find`, `findById`, `save`, `findByIdAndUpdate`)
+- [ ] Reescribir `src/db/empleado.db.js` con Mongoose, usando `populate('empresaId')`
+- [ ] Reescribir `src/db/novedad.db.js` con Mongoose, usando `populate('empleadoId empresaId')`
+- [ ] Reescribir `src/db/seguimiento.db.js` con Mongoose, usando `populate('novedadId')`
+- [ ] Reescribir `src/db/auditoria.db.js` con Mongoose
+- [ ] Actualizar `src/services/reporte.service.js`: reemplazar lecturas de JSON por queries de agregación o `countDocuments()` de Mongoose
+- [ ] Eliminar o deprecar `src/db/json.store.js` (ya no se usa)
+
+**Entregables clave:**
+- 5 modelos Mongoose actualizados
+- 5 archivos `*.db.js` reescritos con Mongoose
+- `reporte.service.js` funcional con MongoDB
+
+---
+
+### **Andrea Maccan** (`amaccan`) — Modelos Mongoose: Liquidaciones y Socios + Seed + Docs
+
+- [ ] Crear `src/models/liquidacion.js` con schema Mongoose: `empleadoId` (`ref: 'Empleado'`), `empresaId` (`ref: 'Empresa'`), `periodo`, `totalBruto`, `totalNeto`, `activa`, `timestamps`
+- [ ] Crear `src/models/socio.js` con schema Mongoose: `nombre`, `apellido`, `dni` (único), `participacion` (1–100), `activo`, `timestamps`
+- [ ] Reescribir `src/db/liquidacion.db.js` con Mongoose, validaciones cruzadas con `findById`
+- [ ] Reescribir `src/db/socio.db.js` con Mongoose (usar índice único en `dni`)
+- [ ] Crear `src/db/seed.js`: script que inserta datos de prueba en todas las colecciones (orden: empresas → empleados → novedades → seguimientos → liquidaciones → socios)
+- [ ] Actualizar `docs/liquidaciones.yaml`: ajustar tipos de ID a formato MongoDB (`ObjectId`) y ejemplos
+- [ ] Actualizar `docs/socios.yaml`: idem
+- [ ] Verificar que el bundle `docs/index.yaml` siga siendo válido con `npm run docs:bundle`
+
+**Entregables clave:**
+- 2 modelos Mongoose actualizados
+- 2 archivos `*.db.js` reescritos
+- `src/db/seed.js` funcional
+- Documentación OpenAPI actualizada
+
+---
+
+### **Cecilia Gómez** (`cesugomez`) — Vistas Pug: ajustes para MongoDB + flujo completo
+
+> Los IDs en MongoDB son `ObjectId` (cadenas de 24 caracteres hex). Los formularios y rutas que usan IDs deben ser revisados para este formato.
+
+- [ ] Revisar todos los formularios Pug que usan IDs en `action` de `<form>`: cambiar cualquier ID numérico hardcodeado a referencias dinámicas con `item._id`
+- [ ] Actualizar `views/empresas/`: asegurarse de que `detalle.pug` y `form.pug` usen `empresa._id` (no `empresa.id`)
+- [ ] Actualizar `views/empleados/`: idem con `empleado._id`, mostrar nombre de empresa usando `empleado.empresaId.nombre` (populate)
+- [ ] Actualizar `views/novedades/`: mostrar nombre de empleado y empresa desde los campos populados
+- [ ] Actualizar `views/liquidaciones/`: mostrar referencias populadas de empleado y empresa
+- [ ] Actualizar `views/socios/`, `views/seguimientos/`, `views/auditoria/`: revisar IDs y campos
+- [ ] Verificar que los filtros en `views/novedades/index.pug` y `views/auditoria/index.pug` sigan funcionando con los nuevos queries Mongoose
+- [ ] Verificar vista `views/reporte/resumen.pug`: adaptar si cambian los campos de `reporte.service.js`
+- [ ] Probar el flujo visual completo: Crear empresa → Empleado → Novedad → Seguimiento → Liquidación en el navegador
+
+**Entregables clave:**
+- Todas las vistas actualizadas para `ObjectId`
+- Flujo visual completo funcional contra MongoDB
+
+---
+
+### **Guillermo Aybar** (`GuilleGearts`) — QA, integración, documentación y video
+
+- [ ] **QA — Happy Path con MongoDB:**
+  - Crear empresa → empleado → novedad → seguimiento → liquidación → socio (flujo completo)
+  - Verificar respuestas HTTP correctas (201, 200, 400, 404, etc.)
+  - Verificar que `populate()` retorna datos correctos en los endpoints de listado y detalle
+- [ ] **QA — Sad Path con MongoDB:**
+  - Intentar crear empleado con `empresaId` inexistente (debe retornar 404)
+  - Intentar crear novedad con empleado de otra empresa (debe retornar 400)
+  - Crear socio con DNI duplicado (debe retornar error de validación Mongoose)
+  - Enviar `ObjectId` con formato inválido (debe retornar 400, no 500)
+- [ ] **QA — Manejo de errores Mongoose:** Verificar que `error.middleware.js` capture errores de tipo `ValidationError` y `CastError` de Mongoose y los convierta en respuestas HTTP legibles (no stack traces)
+- [ ] Actualizar `docs/empleados.yaml`, `docs/empresas.yaml`, `docs/novedades.yaml`, `docs/seguimientos.yaml`, `docs/resumen.yaml`: ajustar IDs a formato `ObjectId`
+- [ ] Actualizar `docs/index.yaml` con la nueva referencia a MongoDB en la descripción general
+- [ ] **Video (responsabilidad compartida, coordinación a cargo de Guillermo):**
+  - Mostrar la conexión a MongoDB en el código y en MongoDB Compass
+  - Demostrar el flujo completo desde las vistas Pug
+  - Mostrar un ejemplo de error Mongoose manejado correctamente
+  - Cada integrante explica su parte (requisito de la consigna)
+  - Subir a YouTube/Drive con permisos de visualización habilitados
+
+**Entregables clave:**
+- Reporte de QA documentado (puede ser sección en el PDF de entrega)
+- Documentación OpenAPI actualizada
+- Video grupal publicado y con enlace compartido
+
+---
+
+## Dependencias entre tareas (orden sugerido)
+
+```
+1. Sebastián  →  connectDB() + .env       (base para todo lo demás)
+2. Florencia  →  Modelos Mongoose core    (empresa, empleado, novedad)
+3. Andrea     →  Modelos Mongoose rest    (liquidacion, socio) + seed
+4. Florencia  →  *.db.js reescritos       (depende de los modelos)
+5. Andrea     →  *.db.js reescritos       (depende de los modelos)
+6. Cecilia    →  Ajuste de vistas         (depende de db.js funcionales)
+7. Guillermo  →  QA                       (depende de todo lo anterior)
+8. TODOS      →  Video                    (última etapa)
+```
+
+---
+
+## Checklist de entrega — Segunda Entrega
+
+### Técnico
+- [ ] La app conecta a MongoDB al iniciar (log de confirmación en consola)
+- [ ] Todos los módulos usan Mongoose (ninguno sigue usando `json.store.js`)
+- [ ] Los endpoints de relaciones usan `populate()` correctamente
+- [ ] Los errores de Mongoose (ValidationError, CastError) son manejados por el middleware
+- [ ] El script `seed` carga datos de prueba correctamente
+- [ ] Las vistas Pug funcionan correctamente con `ObjectId`
+
+### Documentación (PDF de entrega)
+- [ ] Link al repositorio Git
+- [ ] Diagrama de modelos/relaciones Mongoose (opcional pero valorado)
+- [ ] Roles y responsabilidades actualizados para la segunda entrega
+- [ ] Bibliografía utilizada (docs de Mongoose, MongoDB, tutoriales)
+- [ ] Explicación del funcionamiento de la aplicación
+
+### Video
+- [ ] Cada integrante explica su participación
+- [ ] Se muestra la conexión a MongoDB (Compass o log)
+- [ ] Se muestra el flujo completo de la app
+- [ ] Se muestra manejo de errores
+- [ ] Enlace publicado con permisos de visualización
+
+---
+
+## Distribución Segunda Entrega
+
+| Integrante | Tareas Segunda Entrega | Prioridad |
+|------------|------------------------|-----------|
+| Sebastián Sosa | Setup MongoDB, connectDB, .env, README | 🔴 Alta (bloquea todo) |
+| Florencia Marcazzo | Modelos + db.js: Empresa, Empleado, Novedad, Seguimiento, Auditoría, Reporte | 🔴 Alta |
+| Andrea Maccan | Modelos + db.js: Liquidacion, Socio + Seed + Docs | 🔴 Alta |
+| Cecilia Gómez | Ajuste vistas Pug para ObjectId + prueba flujo visual | 🟡 Media (depende de db.js) |
+| Guillermo Aybar | QA MongoDB + Docs OpenAPI + coordinación video | 🟡 Media (depende de todo) |
 
 ---
 
