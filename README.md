@@ -1,6 +1,9 @@
 # Talento Evolutivo S.A. API (Backend)
 
-API REST en Node.js + Express para seguimiento administrativo del proceso de liquidacion de haberes: empresas, empleados, novedades, seguimientos, auditoria e indicadores. La persistencia es local en archivos JSON (sin DB externa).
+API REST en Node.js + Express para seguimiento administrativo del proceso de liquidacion de haberes: empresas, empleados, novedades, seguimientos, auditoria e indicadores.
+
+- Módulos base (`Empresa`, `Empleado`) persisten en MongoDB (Mongoose).
+- El resto de módulos continúa con persistencia local JSON.
 
 ## Quickstart
 
@@ -23,11 +26,28 @@ Health / root:
 curl http://localhost:3000/
 ```
 
+## MongoDB (local)
+
+Requisitos:
+- MongoDB corriendo en `mongodb://localhost:27017`
+
+Instalación rápida:
+- macOS (Homebrew): `brew install mongodb-community@7` y luego `brew services start mongodb-community@7`
+- Linux: instalar `mongod` desde el repositorio oficial de MongoDB y levantar el servicio
+
+Variables de entorno:
+- Crear `.env` (ver `.env.example`)
+
+Seed (datos iniciales):
+
+```bash
+npm run seed
+```
+
 ## Datos y persistencia
 
-- Persistencia: `src/db/data/*.json`
-- IDs: numericos autoincrementales por entidad
-- Soft delete: `DELETE` marca `activo=false` (baja logica)
+- MongoDB (Empresa/Empleado): IDs tipo `ObjectId` (string) y baja lógica (`activo=false` o `activa=false`)
+- JSON (otros módulos): `src/db/data/*.json`
 
 ## Respuestas y errores
 

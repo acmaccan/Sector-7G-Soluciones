@@ -50,7 +50,7 @@ block content
             if empresas
               each empresa in empresas
                 //- En edición, si el ID coincide opción preseleccionada
-                option(value=empresa.id selected=(empleado && empleado.empresaId === empresa.id))= empresa.nombre
+                option(value=empresa.id selected=(empleado && String(empleado.empresaId && empleado.empresaId._id ? empleado.empresaId._id : empleado.empresaId) === String(empresa.id)))= empresa.nombre
 
         button.btn-submit(type="submit")= empleado ? 'Guardar Cambios' : 'Registrar Empleado'
 
@@ -62,7 +62,7 @@ block content
       const data = Object.fromEntries(formData.entries());
       
       const isEdit = #{empleado ? 'true' : 'false'};
-      const empleadoId = '#{empleado ? empleado.id : ""}';
+      const empleadoId = '#{empleado ? empleado._id : ""}';
       
       const url = isEdit ? `/api/empleados/${empleadoId}` : '/api/empleados';
       const method = isEdit ? 'PUT' : 'POST';

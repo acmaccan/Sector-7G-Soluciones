@@ -38,6 +38,19 @@ block content
           label(for="contacto") Contacto (Email o Teléfono):
           input#contacto.form-control(type="text", name="contacto", value=empresa ? empresa.contacto : '', required)
 
+        .form-group
+          label(for="convenio") Convenio:
+          select#convenio.form-control(name="convenio")
+            option(value="general" selected=(!empresa || empresa.convenio === 'general')) General
+            option(value="docente" selected=(empresa && empresa.convenio === 'docente')) Docente
+            option(value="sanidad" selected=(empresa && empresa.convenio === 'sanidad')) Sanidad
+            option(value="comercio" selected=(empresa && empresa.convenio === 'comercio')) Comercio
+            option(value="otro" selected=(empresa && empresa.convenio === 'otro')) Otro
+
+        .form-group
+          label(for="fechaCierrePeriodo") Fecha cierre período (1 a 28):
+          input#fechaCierrePeriodo.form-control(type="number", min="1", max="28", name="fechaCierrePeriodo", value=empresa ? empresa.fechaCierrePeriodo : '')
+
         button.btn-submit(type="submit")= empresa ? 'Guardar Cambios' : 'Registrar Empresa'
 
   //- Lógica de cliente para enviar los datos

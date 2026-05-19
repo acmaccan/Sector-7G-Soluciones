@@ -1,35 +1,44 @@
-import { nowIso } from "../libs/time.js";
+import mongoose from "mongoose";
 
-export const createEmpleado = (payload) => {
-  const timestamp = nowIso();
+const empleadoSchema = new mongoose.Schema(
+  {
+    nombre: { type: String, required: true, trim: true },
+    apellido: { type: String, required: true, trim: true },
+    dni: { type: String, required: true, trim: true },
+    puesto: { type: String, required: true, trim: true },
+    email: { type: String, required: true, trim: true, lowercase: true },
+    empresaId: { type: mongoose.Schema.Types.ObjectId, ref: "Empresa" },
+    activo: { type: Boolean, default: true },
+  },
+  { timestamps: true },
+);
 
-  return {
-    nombre: payload.nombre.trim(),
-    apellido: payload.apellido.trim(),
-    dni: String(payload.dni).trim(),
-    puesto: payload.puesto.trim(),
-    email: payload.email.trim(),
-    empresaId: Number(payload.empresaId),
-    activo: true,
-    createdAt: timestamp,
-    updatedAt: timestamp,
-  };
-};
+empleadoSchema.index({ dni: 1 }, { unique: true });
 
-export const updateEmpleado = (currentEmpleado, payload) => ({
-  ...currentEmpleado,
-  nombre:
-    payload.nombre !== undefined ? payload.nombre.trim() : currentEmpleado.nombre,
-  apellido:
-    payload.apellido !== undefined
-      ? payload.apellido.trim()
-      : currentEmpleado.apellido,
-  dni: payload.dni !== undefined ? String(payload.dni).trim() : currentEmpleado.dni,
-  puesto:
-    payload.puesto !== undefined ? payload.puesto.trim() : currentEmpleado.puesto,
-  email: payload.email !== undefined ? payload.email.trim() : currentEmpleado.email,
-  empresaId:
-    payload.empresaId !== undefined
-      ? Number(payload.empresaId)
-      : currentEmpleado.empresaId,
+export const Empleado =
+  mongoose.models.Empleado || mongoose.model("Empleado", empleadoSchema);
+
+// Compat helpers used by existing services (kept minimal)
+export const createEmpleado = (payload) => ({
+  nombre: payload.nombre?.trim(),
+  apellido: payload.apellido?.trim(),
+  dni: String(payload.dni ?? "").trim(),
+  puesto: payload.puesto?.trim(),
+  email: payload.email?.trim()?.toLowerCase(),
+  empresaId: payload.empresaId,
+  activo: true,
+});
+
+export const updateEmpleado = (_currentEmpleado, payload) => ({
+  ...(payload.nombre !== undefined ? { nombre: payload.nombre.trim() } : {}),
+  ...(payload.apellido !== undefined
+    ? { apellido: payload.apellido.trim() }
+    : {}),
+  ...(payload.dni !== undefined ? { dni: String(payload.dni).trim() } : {}),
+  ...(payload.puesto !== undefined ? { puesto: payload.puesto.trim() } : {}),
+  ...(payload.email !== undefined
+    ? { email: String(payload.email).trim().toLowerCase() }
+    : {}),
+  ...(payload.empresaId !== undefined ? { empresaId: payload.empresaId } : {}),
+  ...(payload.activo !== undefined ? { activo: Boolean(payload.activo) } : {}),
 });

@@ -44,7 +44,7 @@ block content
             tr
               td= `${emp.nombre} ${emp.apellido}`
               td= emp.dni
-              td= emp.empresaId
+              td= emp.empresaId && emp.empresaId.nombre ? emp.empresaId.nombre : emp.empresaId
               td
                 if emp.activo
                   span.badge-activo Activo

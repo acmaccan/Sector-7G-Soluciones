@@ -30,5 +30,13 @@
     "descripcion": "Se creo la novedad Accidente Trabajo para el empleado 2.",
     "timestamp": "2026-04-26T05:34:28.972Z",
     "id": 4
+  },
+  {
+    "entidad": "empresa",
+    "entidadId": null,
+    "accion": "creacion",
+    "descripcion": "Se creo la empresa axion.",
+    "timestamp": "2026-05-19T04:21:40.821Z",
+    "id": 5
   }
 ]
