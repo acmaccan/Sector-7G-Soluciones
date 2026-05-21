@@ -7,17 +7,19 @@ import { registrarAuditoria } from "./auditoria.service.js";
 
 const buildEmpresaView = (empresa, empleados, novedades) => {
   const empleadosRelacionados = empleados
-    .filter((empleado) => empleado.empresaId === empresa.id)
+    .filter(
+      (empleado) =>
+        String(empleado.empresaId?._id ?? empleado.empresaId) === String(empresa.id),
+    )
     .map((empleado) => ({
       id: empleado.id,
       nombre: empleado.nombre,
       apellido: empleado.apellido,
-      puesto: empleado.puesto,
       activo: empleado.activo,
     }));
 
   const novedadesRelacionadas = novedades
-    .filter((novedad) => novedad.empresaId === empresa.id)
+    .filter((novedad) => String(novedad.empresaId) === String(empresa.id))
     .map((novedad) => ({
       id: novedad.id,
       tipo: novedad.tipo,

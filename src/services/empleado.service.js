@@ -16,7 +16,7 @@ const buildEmpleadoView = (empleado, empresa, novedades) => ({
       }
     : null,
   novedades: novedades
-    .filter((novedad) => novedad.empleadoId === empleado.id)
+    .filter((novedad) => String(novedad.empleadoId) === String(empleado.id))
     .map((novedad) => ({
       id: novedad.id,
       tipo: novedad.tipo,
@@ -40,16 +40,12 @@ const validarEmpresaActiva = async (empresaId) => {
 };
 
 export const listarEmpleados = async ({ empresaId, activo } = {}) => {
-  const [empleados, empresas, novedades] = await Promise.all([
-    empleadoDb.getAll(),
-    empresaDb.getAll(),
-    novedadDb.getAll(),
-  ]);
+  const [empleados, novedades] = await Promise.all([empleadoDb.getAll(), novedadDb.getAll()]);
 
   return empleados
     .filter((empleado) => {
       const coincideEmpresa = empresaId
-        ? empleado.empresaId === Number(empresaId)
+        ? String(empleado.empresaId?._id ?? empleado.empresaId) === String(empresaId)
         : true;
       const coincideActivo =
         activo === undefined ? true : empleado.activo === (activo === "true");
@@ -59,18 +55,21 @@ export const listarEmpleados = async ({ empresaId, activo } = {}) => {
     .map((empleado) =>
       buildEmpleadoView(
         empleado,
-        empresas.find((empresa) => empresa.id === empleado.empresaId),
+        empleado.empresaId && typeof empleado.empresaId === "object"
+          ? {
+              id: String(empleado.empresaId._id),
+              nombre: empleado.empresaId.nombre,
+              cuit: empleado.empresaId.cuit,
+              activo: empleado.empresaId.activa,
+            }
+          : null,
         novedades,
       ),
     );
 };
 
 export const obtenerEmpleado = async (id) => {
-  const [empleado, empresas, novedades] = await Promise.all([
-    empleadoDb.getById(id),
-    empresaDb.getAll(),
-    novedadDb.getAll(),
-  ]);
+  const [empleado, novedades] = await Promise.all([empleadoDb.getById(id), novedadDb.getAll()]);
 
   if (!empleado) {
     throw notFound("Empleado no encontrado.");
@@ -78,7 +77,14 @@ export const obtenerEmpleado = async (id) => {
 
   return buildEmpleadoView(
     empleado,
-    empresas.find((empresa) => empresa.id === empleado.empresaId),
+    empleado.empresaId && typeof empleado.empresaId === "object"
+      ? {
+          id: String(empleado.empresaId._id),
+          nombre: empleado.empresaId.nombre,
+          cuit: empleado.empresaId.cuit,
+          activo: empleado.empresaId.activa,
+        }
+      : null,
     novedades,
   );
 };
@@ -129,7 +135,10 @@ export const actualizarEmpleado = async (id, payload) => {
       (novedad) => novedad.empleadoId === empleado.id && novedad.activo,
     );
 
-    if (tieneNovedadesActivas && Number(payload.empresaId) !== empleado.empresaId) {
+    if (
+      tieneNovedadesActivas &&
+      String(payload.empresaId) !== String(empleado.empresaId?._id ?? empleado.empresaId)
+    ) {
       throw badRequest(
         "No se puede cambiar la empresa del empleado mientras tenga novedades activas.",
       );

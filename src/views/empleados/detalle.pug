@@ -35,7 +35,7 @@ block content
           
         .info-item
           .info-label Empresa Vinculada (ID)
-          .info-valor= empleado.empresaId
+          .info-valor= empleado.empresaId && empleado.empresaId.nombre ? empleado.empresaId.nombre : empleado.empresaId
           
         .info-item
           .info-label Estado del Empleado

@@ -7,6 +7,7 @@
     "dev": "nodemon ./src/index.js",
     "start": "node ./src/index.js",
     "test": "node --check ./src/index.js",
+    "seed": "node src/db/seed.js",
     "docs:bundle": "redocly bundle ./docs/index.yaml -o ./docs/bundle.yaml --force"
   },
   "keywords": [],
@@ -14,9 +15,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
+    "mongoose": "^9.6.2",
     "morgan": "^1.10.1",
     "pug": "^3.0.4"
   },

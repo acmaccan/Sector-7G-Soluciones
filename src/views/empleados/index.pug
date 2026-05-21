@@ -44,7 +44,7 @@ block content
             tr
               td= `${emp.nombre} ${emp.apellido}`
               td= emp.dni
-              td= emp.empresaId
+              td= emp.empresaId && emp.empresaId.nombre ? emp.empresaId.nombre : emp.empresaId
               td
                 if emp.activo
                   span.badge-activo Activo
@@ -54,7 +54,7 @@ block content
                 a.btn-accion(href=`/empleados/${emp.id}`) Ver
                 a.btn-accion.btn-editar(href=`/empleados/form/${emp.id}`) Editar
                 if emp.activo
-                  button.btn-accion.btn-baja(onclick=`darDeBaja(${emp.id})`) Dar de Baja
+                  button.btn-accion.btn-baja.js-baja(type="button" data-id=emp.id) Dar de Baja
         else
           tr
             td(colspan="5" style="text-align: center; padding: 30px; color: #6272a4;") No hay empleados registrados en el sistema.
@@ -70,11 +70,18 @@ block content
           // Recarga la página con estado actualizado
           window.location.reload(); 
         } else {
-          const errorData = await response.json();
-          alert('No se pudo realizar la acción: ' + (errorData.message || 'Verificá el estado del empleado.'));
+          const errorData = await response.json().catch(() => ({}));
+          alert('No se pudo realizar la acción: ' + (errorData.message || `HTTP ${response.status}`));
         }
       } catch (error) {
         console.error(error);
         alert('Error de conexión con el servidor al intentar dar de baja.');
       }
     }
+
+    document.addEventListener('click', (event) => {
+      const btn = event.target.closest('button.js-baja');
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      darDeBaja(id);
+    });

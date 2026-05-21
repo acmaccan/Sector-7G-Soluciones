@@ -30,5 +30,101 @@
     "descripcion": "Se creo la novedad Accidente Trabajo para el empleado 2.",
     "timestamp": "2026-04-26T05:34:28.972Z",
     "id": 4
+  },
+  {
+    "entidad": "empresa",
+    "entidadId": null,
+    "accion": "creacion",
+    "descripcion": "Se creo la empresa axion.",
+    "timestamp": "2026-05-19T04:21:40.821Z",
+    "id": 5
+  },
+  {
+    "entidad": "empleado",
+    "entidadId": null,
+    "accion": "modificacion",
+    "descripcion": "Se actualizo el empleado Mariana Gómez.",
+    "timestamp": "2026-05-20T17:52:59.957Z",
+    "id": 6
+  },
+  {
+    "entidad": "empresa",
+    "entidadId": null,
+    "accion": "modificacion",
+    "descripcion": "Se actualizo la empresa axion.",
+    "timestamp": "2026-05-20T17:58:14.407Z",
+    "id": 7
+  },
+  {
+    "entidad": "empresa",
+    "entidadId": null,
+    "accion": "creacion",
+    "descripcion": "Se creo la empresa acor net.",
+    "timestamp": "2026-05-20T17:59:03.213Z",
+    "id": 8
+  },
+  {
+    "entidad": "empleado",
+    "entidadId": null,
+    "accion": "modificacion",
+    "descripcion": "Se actualizo el empleado Mariana Gómez.",
+    "timestamp": "2026-05-20T18:12:37.971Z",
+    "id": 9
+  },
+  {
+    "entidad": "empleado",
+    "entidadId": null,
+    "accion": "baja_logica",
+    "descripcion": "Se dio de baja el empleado Elena Martínez.",
+    "timestamp": "2026-05-20T18:15:20.876Z",
+    "id": 10
+  },
+  {
+    "entidad": "empleado",
+    "entidadId": null,
+    "accion": "modificacion",
+    "descripcion": "Se actualizo el empleado Bruno Gómez.",
+    "timestamp": "2026-05-20T18:15:55.326Z",
+    "id": 11
+  },
+  {
+    "entidad": "empleado",
+    "entidadId": null,
+    "accion": "creacion",
+    "descripcion": "Se creo el empleado Florencia Marc.",
+    "timestamp": "2026-05-20T18:17:10.241Z",
+    "id": 12
+  },
+  {
+    "entidad": "empresa",
+    "entidadId": null,
+    "accion": "modificacion",
+    "descripcion": "Se actualizo la empresa Talento Evolutivo S.A..",
+    "timestamp": "2026-05-20T18:18:00.221Z",
+    "id": 13
+  },
+  {
+    "entidad": "empresa",
+    "entidadId": null,
+    "accion": "modificacion",
+    "descripcion": "Se actualizo la empresa Clínica San Gabriel.",
+    "timestamp": "2026-05-20T18:18:44.397Z",
+    "id": 14
+  },
+  {
+    "entidad": "empresa",
+    "entidadId": null,
+    "accion": "creacion",
+    "descripcion": "Se creo la empresa redhoy.",
+    "timestamp": "2026-05-20T18:19:29.001Z",
+    "id": 15
+  },
+  {
+    "entidad": "empleado",
+    "entidadId": null,
+    "accion": "baja_logica",
+    "descripcion": "Se dio de baja el empleado Florencia Marc.",
+    "timestamp": "2026-05-20T18:20:51.742Z",
+    "id": 16
   }
 ]
