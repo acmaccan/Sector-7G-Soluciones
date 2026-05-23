@@ -122,21 +122,318 @@ El sistema deberá organizarse siguiendo una arquitectura modular, validar datos
 - [x] **Documentación OpenAPI:** Generación de archivos YAML para todos los módulos (Empresas, Empleados, Novedades, Seguimientos, Reportes)
 - [x] **Documentación OpenAPI:** Consolidación en `index.yaml` y esquema de errores estandarizado
 - [x] **Coordinación de Entrega:** Creación de guion detallado por clips para la grabación del video
-- [/] Coordinar y editar el video grupal de 10 minutos (En proceso)
+- [x] Coordinar y editar el video grupal de 10 minutos (En proceso)
 
 ---
 
 ## VIDEO - Responsabilidad Grupal (10 minutos)
 
-- [ ] Grabar demostración del flujo completo:
+- [x] Grabar demostración del flujo completo:
   - Crear empresa → Registrar empleados → Registrar novedades → Ver seguimiento → Ver reportes
-- [ ] Mostrar: Estados de novedades (Pendiente → Procesada → Rechazada)
-- [ ] Mostrar: Integración entre módulos (empresa-empleado-novedad-liquidación-socios)
-- [ ] Mostrar: Auditoría registrando todos los cambios
-- [ ] Explicar: Arquitectura modular y buenas prácticas
-- [ ] Explicar: Manejo de errores y validaciones
-- [ ] Editar video (máximo 10 minutos)
-- [ ] Publicar/compartir
+- [x] Mostrar: Estados de novedades (Pendiente → Procesada → Rechazada)
+- [x] Mostrar: Integración entre módulos (empresa-empleado-novedad-liquidación-socios)
+- [x] Mostrar: Auditoría registrando todos los cambios
+- [x] Explicar: Arquitectura modular y buenas prácticas
+- [x] Explicar: Manejo de errores y validaciones
+- [x] Editar video (máximo 10 minutos)
+- [x] Publicar/compartir
+
+---
+
+## ACCIONABLES CLAVE POR MÓDULO — Primera Entrega
+
+- [x] EMPRESA
+- [x] EMPLEADO
+- [x] NOVEDAD
+- [x] SEGUIMIENTO
+- [x] AUDITORÍA
+- [x] REPORTE
+- [x] LIQUIDACIÓN
+- [x] SOCIOS
+- [x] QA/VALIDACIÓN
+
+---
+
+## DISTRIBUCIÓN FINAL — Primera Entrega
+
+| Integrante | Módulos | Estado |
+|------------|---------|--------|
+| Sebastián Sosa | Auth (base), README, Setup Pug | ✅ Completado |
+| Florencia Marcazzo | Empresa, Empleado, Novedad, Seguimiento, Auditoría, Reporte | ✅ Completado |
+| Andrea Maccan | Liquidaciones + Socios | ✅ Completado |
+| Cecilia Gómez | Todas las vistas Pug (todos los módulos) | ✅ Completado |
+| Guillermo Aybar | QA + Integración + Video | ✅ Completado |
+
+---
+
+---
+
+---
+
+# SEGUNDA ENTREGA — Integración con MongoDB y Mongoose
+
+## Contexto de la segunda entrega
+
+La segunda entrega profundiza los contenidos de la materia incorporando **persistencia real con MongoDB** mediante **Mongoose**. El proyecto mantiene la arquitectura modular existente (rutas → controladores → servicios → modelos), pero se reemplaza la capa de persistencia en JSON (`json.store.js` y archivos `*.db.js`) por **schemas y modelos de Mongoose** que interactúan con una base de datos MongoDB local o en la nube (MongoDB Atlas).
+
+### Cambios principales respecto a la Primera Entrega
+
+| Área | Primera Entrega | Segunda Entrega |
+|------|-----------------|-----------------|
+| Persistencia | Archivos JSON (`data/*.json`) | MongoDB con Mongoose |
+| Capa de datos | `json.store.js` + `*.db.js` | Modelos Mongoose (`*.model.js`) |
+| IDs | UUIDs manuales o índices | `ObjectId` de MongoDB |
+| Relaciones | Referencias por ID en JSON | Referencias con `ref` y `populate()` |
+| Conexión DB | — | `mongoose.connect()` en `app.config.js` |
+| Variables de entorno | `PORT` | `PORT`, `MONGODB_URI` |
+
+---
+
+## Tareas de la Segunda Entrega por integrante
+
+---
+
+### **Florencia Marcazzo** (`Floh2023`) — Setup MongoDB + Schemas: Empresa, Empleado
+
+> Base más sólida del proyecto: Florencia toma el setup de infraestructura por su conocimiento integral de la arquitectura, y migra los dos módulos centrales del sistema de los que dependen el resto.
+
+#### Setup y configuración
+- [ ] Instalar dependencias: `mongoose`, `bcrypt`, `express-session` (`npm install mongoose bcrypt express-session`)
+- [ ] Crear archivo `.env` con las variables necesarias:
+  ```
+  PORT=3000
+  MONGODB_URI=mongodb://localhost:27017/talento-evolutivo
+  SESSION_SECRET=una_clave_secreta_larga
+  ```
+- [ ] Crear archivo `.env.example` con las mismas variables pero sin valores sensibles
+- [ ] Agregar `.env` al `.gitignore`
+- [ ] Actualizar `src/config/app.config.js`: leer variables de entorno, exportar función `connectDB()` con `mongoose.connect()`
+- [ ] Actualizar `src/index.js`: llamar a `connectDB()` al iniciar, registrar `express-session` como middleware global
+- [ ] Agregar script `"seed": "node src/db/seed.js"` en `package.json`
+- [ ] Actualizar `README.md` con instrucciones de instalación de MongoDB local y uso del seed
+- [ ] Eliminar `src/db/json.store.js` (ya no se usa en ningún módulo)
+
+> ⚠️ **Requisito previo para todo el equipo:** cada integrante debe tener instalado **MongoDB Community Server** ([mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)) con el servicio corriendo. Se recomienda **MongoDB Compass** para visualizar datos (útil para el video).
+
+#### Schemas y persistencia
+- [ ] Crear `src/models/empresa.js`: `nombre`, `cuit`, `activa`, `convenio` (enum: `'general'`, `'docente'`, `'sanidad'`, `'comercio'`, `'otro'`), `fechaCierrePeriodo` (Number 1–28), `fechaAlta`, `timestamps`
+- [ ] Crear `src/models/empleado.js`: `nombre`, `apellido`, `dni`, `empresaId` (`ref: 'Empresa'`), `activo`, `timestamps`
+- [ ] Reescribir `src/db/empresa.db.js` con Mongoose (`find`, `findById`, `save`, `findByIdAndUpdate`)
+- [ ] Reescribir `src/db/empleado.db.js` con Mongoose, usando `populate('empresaId')`
+
+#### Vistas
+- [ ] Actualizar `views/empresas/form.pug`: agregar selector de `convenio` y campo `fechaCierrePeriodo`
+- [ ] Actualizar `views/empresas/detalle.pug` e `index.pug`: mostrar `convenio` y `fechaCierrePeriodo`
+- [ ] Actualizar `views/empleados/`: usar `empleado._id`, mostrar `empleado.empresaId.nombre` (populate)
+
+#### Seed (estructura base + sección propia)
+- [ ] Crear `src/db/seed.js` con la estructura base (conexión, limpieza, orden de carga)
+- [ ] Agregar datos de prueba: **empresas** (4–5 con distintos convenios) y **empleados** (6–8 distribuidos)
+
+**Entregables clave:**
+- `src/config/app.config.js` con `connectDB()`, `.env.example`, `.gitignore` actualizados
+- 2 schemas Mongoose (`empresa`, `empleado`) + 2 `db.js` reescritos
+- Vistas de empresas y empleados actualizadas
+- `src/db/seed.js` con estructura base
+
+---
+
+### **Sebastián Sosa** (`Animas-Ss`) — Schemas: Novedad, Seguimiento + Vistas novedades/seguimientos
+
+> El esqueleto de autenticación (`auth.routes.js`, `auth.controllers.js`, `auth.services.js`, `auth.models.js`) creado en la primera entrega queda como base para que **Andrea** lo complete en esta instancia.
+
+#### Schemas y persistencia
+- [ ] Crear `src/models/novedad.js`: `empleadoId` (`ref: 'Empleado'`), `empresaId` (`ref: 'Empresa'`), `tipo`, `estado` (enum: `'pendiente'`, `'procesada'`, `'rechazada'`), `descripcion`, `timestamps`
+- [ ] Crear `src/models/seguimiento.js`: `novedadId` (`ref: 'Novedad'`), `estado`, `observacion`, `timestamps`
+- [ ] Reescribir `src/db/novedad.db.js` con Mongoose, usando `populate('empleadoId empresaId')`
+- [ ] Reescribir `src/db/seguimiento.db.js` con Mongoose, usando `populate('novedadId')`
+
+#### Vistas
+- [ ] Actualizar `views/novedades/`: usar `._id`, mostrar nombre de empleado y empresa desde populate, verificar filtros por estado
+- [ ] Actualizar `views/seguimientos/`: usar `._id`, mostrar datos de novedad desde populate
+
+#### Seed (sección propia)
+- [ ] Agregar al `seed.js` datos de prueba: **novedades** (5–6 en distintos estados) y **seguimientos** (3–4)
+
+**Entregables clave:**
+- 2 schemas Mongoose (`novedad`, `seguimiento`) + 2 `db.js` reescritos
+- Vistas de novedades y seguimientos actualizadas
+- Sección del seed completa
+
+---
+
+### **Andrea Maccan** (`amaccan`) — Autenticación completa (bcrypt + express-session)
+
+> Tarea cohesionada de punta a punta: modelo → lógica → middleware → vistas. Base disponible: esqueleto de `auth.*` creado por Sebastián en la primera entrega.
+
+#### Schema y persistencia
+- [ ] Crear `src/models/usuario.js`: `usuario` (único), `password` (hasheado con bcrypt), `rol` (enum: `'admin'`, `'operador'`), `timestamps`
+
+#### Lógica de autenticación
+- [ ] Completar `src/services/auth.service.js`:
+  - `login(usuario, password)`: busca en DB, compara con `bcrypt.compare()`, retorna el usuario o lanza error
+  - `logout()`: destruye la sesión
+- [ ] Completar `src/controllers/view/auth.controller.js`:
+  - `GET /login`: renderiza `views/auth/login.pug`
+  - `POST /login`: llama al service, guarda `req.session.usuario`, redirige a `/`
+  - `POST /logout`: destruye sesión, redirige a `/login`
+- [ ] Completar `src/routes/auth.routes.js`: montar rutas de login/logout
+- [ ] Crear `src/controllers/view/usuario.controller.js`:
+  - `GET /usuarios/nuevo`: renderiza formulario de alta (solo admin)
+  - `POST /usuarios`: crea usuario con password hasheado con `bcrypt.hash()`
+
+#### Middleware y protección de rutas
+- [ ] Crear `src/middlewares/auth.middleware.js`:
+  - `requireAuth`: verifica `req.session.usuario`, redirige a `/login` si no hay sesión
+  - `requireAdmin`: verifica `req.session.usuario.rol === 'admin'`, retorna 403 si no
+- [ ] Aplicar `requireAuth` en `src/routes/index.routes.js` para proteger todas las rutas
+- [ ] Pasar `req.session.usuario` como variable local a las vistas en un middleware global (para que Pug muestre/oculte opciones según rol)
+
+#### Vistas de auth
+- [ ] Crear `views/auth/login.pug`: formulario usuario/password, mensaje de error si credenciales incorrectas
+- [ ] Agregar link de **Logout** en `views/layout.pug` (visible solo si hay sesión activa)
+- [ ] Crear `views/usuarios/form.pug`: formulario de alta de usuario con selector de rol (solo accesible para admin)
+
+#### Seed (sección propia)
+- [ ] Agregar al `seed.js`: usuario **admin** y usuario **operador** con passwords hasheados con `bcrypt`
+
+**Entregables clave:**
+- `src/models/usuario.js` + `auth.service.js`, `auth.controller.js`, `auth.routes.js` completos
+- `auth.middleware.js` con `requireAuth` y `requireAdmin`
+- Vistas `login.pug`, `layout.pug` (logout), `usuarios/form.pug`
+- Sección del seed con usuarios
+
+---
+
+### **Cecilia Gómez** (`cesugomez`) — Schemas: Liquidación, Socio + Vistas liquidaciones/socios + ajuste ObjectId global
+
+#### Schemas y persistencia
+- [ ] Crear `src/models/liquidacion.js`: `empleadoId` (`ref: 'Empleado'`), `empresaId` (`ref: 'Empresa'`), `periodo`, `totalBruto`, `totalNeto`, `activa`, `timestamps`
+- [ ] Crear `src/models/socio.js`: `nombre`, `apellido`, `dni` (único), `participacion` (1–100), `activo`, `timestamps`
+- [ ] Reescribir `src/db/liquidacion.db.js` con Mongoose, validaciones cruzadas con `findById`
+- [ ] Reescribir `src/db/socio.db.js` con Mongoose (índice único en `dni`)
+
+#### Vistas
+- [ ] Actualizar `views/liquidaciones/`: usar `._id`, mostrar referencias populadas de empleado y empresa
+- [ ] Actualizar `views/socios/`: usar `._id`
+- [ ] Revisar `views/auditoria/` y `views/reporte/resumen.pug`: verificar IDs y campos
+- [ ] Probar el flujo visual completo en el navegador una vez que todos los `db.js` estén migrados
+
+#### Seed (sección propia)
+- [ ] Agregar al `seed.js` datos de prueba: **liquidaciones** (3–4) y **socios** (3–4)
+
+**Entregables clave:**
+- 2 schemas Mongoose (`liquidacion`, `socio`) + 2 `db.js` reescritos
+- Vistas de liquidaciones y socios actualizadas
+- Sección del seed completa
+
+---
+
+### **Guillermo Aybar** (`GuilleGearts`) — Schema: Auditoría + Middleware de errores + QA + Docs + Video
+
+#### Schema y persistencia
+- [ ] Crear `src/models/auditoria.js`: `entidad`, `entidadId`, `accion`, `detalle`, `timestamps`
+- [ ] Reescribir `src/db/auditoria.db.js` con Mongoose (sin populate, solo escritura/lectura)
+- [ ] Actualizar `src/services/reporte.service.js`: reemplazar lecturas JSON por `countDocuments()` y queries Mongoose
+
+#### Middleware de errores Mongoose
+- [ ] Actualizar `src/middlewares/error.middleware.js` para capturar y convertir:
+  - `ValidationError` de Mongoose → HTTP 400 con mensaje legible
+  - `CastError` (ObjectId inválido) → HTTP 400 con mensaje "ID inválido"
+  - `MongoServerError` código 11000 (clave duplicada) → HTTP 409 "Ya existe un registro con ese valor"
+
+#### QA
+- [ ] **Happy Path completo:** login → crear empresa → empleado → novedad → seguimiento → liquidación → logout
+- [ ] **Sad Path — auth:** login con credenciales incorrectas, acceso a ruta protegida sin sesión, acceso a ruta admin con rol operador
+- [ ] **Sad Path — datos:** `empresaId` inexistente, novedad con empleado de otra empresa, DNI duplicado en socio, `ObjectId` con formato inválido
+- [ ] Verificar que todos los errores retornan HTTP adecuado (nunca stack trace)
+
+#### Documentación
+- [ ] Actualizar `docs/empresas.yaml`, `docs/empleados.yaml`, `docs/novedades.yaml`, `docs/seguimientos.yaml`, `docs/resumen.yaml`: IDs a `ObjectId`, agregar campo `convenio` en empresa
+- [ ] Actualizar `docs/index.yaml` con descripción de MongoDB y auth
+- [ ] Documentar en el README (sección **Requerimientos funcionales cubiertos**) las Mejoras 1, 2 y 3 del documento de propuestas
+- [ ] Documentar en el README (sección **Requerimientos futuros**) la Mejora 4 (alertas automáticas) con justificación técnica
+- [ ] Verificar bundle `npm run docs:bundle`
+
+#### Video
+- [ ] Coordinar grabación: cada integrante explica su parte (requisito de la consigna)
+- [ ] Mostrar: conexión a MongoDB en Compass, login/logout, flujo completo, un error manejado correctamente
+- [ ] Subir a YouTube/Drive con permisos de visualización habilitados
+
+**Entregables clave:**
+- Schema `auditoria` + `auditoria.db.js` reescrito + `reporte.service.js` funcional
+- `error.middleware.js` actualizado para errores Mongoose
+- Reporte de QA documentado (sección en el PDF de entrega)
+- OpenAPI actualizado + README con requerimientos cubiertos/futuros
+- Video grupal publicado y con enlace compartido
+
+---
+
+## Dependencias entre tareas (orden sugerido)
+
+```
+1. Florencia  →  Setup + connectDB + .env           (bloquea todo lo demás)
+               + schemas empresa/empleado + db.js
+               + seed base
+
+2. Sebastián  →  schemas novedad/seguimiento +       (depende de empresa/empleado de Florencia)
+               db.js + vistas novedades/seguimientos
+
+3. Andrea    →  schema usuario + auth completo      (depende de connectDB de Florencia)
+               (en paralelo con Sebastián)
+
+4. Cecilia    →  schemas liquidacion/socio +         (depende de empresa/empleado de Florencia)
+               db.js + vistas liquidaciones/socios
+
+5. Guillermo  →  schema auditoria + db.js +          (puede arrancar en paralelo con Cecilia)
+               error.middleware.js + QA + docs
+
+6. TODOS      →  Video                              (última etapa)
+```
+
+---
+
+## Checklist de entrega — Segunda Entrega
+
+### Técnico
+- [ ] La app conecta a MongoDB al iniciar (log de confirmación en consola)
+- [ ] Todos los módulos usan Mongoose (ninguno sigue usando `json.store.js`)
+- [ ] Los endpoints de relaciones usan `populate()` correctamente
+- [ ] Los errores de Mongoose (`ValidationError`, `CastError`, clave duplicada) son manejados por el middleware
+- [ ] El script `seed` carga datos de prueba correctamente (incluye usuarios admin y operador con passwords hasheados)
+- [ ] Las vistas Pug funcionan correctamente con `ObjectId`
+- [ ] Las rutas están protegidas por `requireAuth` (redirige a `/login` si no hay sesión)
+- [ ] El login con bcrypt funciona correctamente
+- [ ] El logout destruye la sesión y redirige a `/login`
+- [ ] La vista de login muestra mensaje de error ante credenciales incorrectas
+- [ ] El alta de usuario solo es accesible para rol `admin`
+- [ ] Las empresas tienen campo `convenio` y `fechaCierrePeriodo`
+
+### Documentación (PDF de entrega)
+- [ ] Link al repositorio Git
+- [ ] Diagrama de modelos/relaciones Mongoose (opcional pero valorado)
+- [ ] Roles y responsabilidades actualizados para la segunda entrega
+- [ ] Bibliografía utilizada (docs de Mongoose, MongoDB, tutoriales)
+- [ ] Explicación del funcionamiento de la aplicación
+
+### Video
+- [ ] Cada integrante explica su participación
+- [ ] Se muestra la conexión a MongoDB (Compass o log)
+- [ ] Se muestra el flujo completo de la app
+- [ ] Se muestra manejo de errores
+- [ ] Enlace publicado con permisos de visualización
+
+---
+
+## Distribución Segunda Entrega
+
+| Integrante | Tareas Segunda Entrega | Prioridad |
+|------------|------------------------|-----------|
+| Florencia Marcazzo | Setup MongoDB + schemas/db.js: `empresa`, `empleado` + vistas empresas/empleados + seed base | 🔴 Alta (bloquea todo) |
+| Sebastián Sosa | Schemas/db.js: `novedad`, `seguimiento` + vistas novedades/seguimientos + seed | 🔴 Alta (depende del setup) |
+| Andrea Maccan | Schema `usuario` + auth completo: bcrypt + session + middleware + controller + vistas login/usuario | 🔴 Alta (depende del setup) |
+| Cecilia Gómez | Schemas/db.js: `liquidacion`, `socio` + vistas liquidaciones/socios + seed | 🟡 Media (depende de empresa/empleado) |
+| Guillermo Aybar | Schema/db.js `auditoria` + reporte + `error.middleware.js` + QA + OpenAPI + docs + video | 🟡 Media (depende de todo) |
 
 ---
 
@@ -211,32 +508,4 @@ style:  solo cambié formato, nada de lógica
 - Hacé `git pull` antes de arrancar cada vez que te sentás a trabajar
 - Tratá de no subir cambios directo a `main`, así todos pueden revisar antes
 - Evitá el `git push --force` a menos que sepas bien lo que estás haciendo, puede pisar el trabajo de otros sin querer
-
----
-
-## ACCIONABLES CLAVE POR MÓDULO
-
-- [x] EMPRESA
-- [x] EMPLEADO
-- [x] NOVEDAD
-- [x] SEGUIMIENTO
-- [x] AUDITORÍA
-- [x] REPORTE
-- [x] LIQUIDACIÓN
-- [x] SOCIOS
-- [x] QA/VALIDACIÓN
-
----
-
-## DISTRIBUCIÓN FINAL
-
-| Integrante | Módulos | % Completado | Accionables Pendientes |
-|------------|---------|--------------|------------------------|
-| Sebastián Sosa | Auth (base), README, Setup Pug | 80% | Configurar Pug en Express (prerrequisito para Cecilia) |
-| Florencia Marcazzo | Empresa, Empleado, Novedad, Seguimiento, Auditoría, Reporte | 100% | — |
-| Andrea Maccan | Liquidaciones + Socios | 100% | — |
-| Cecilia Gómez | Todas las vistas Pug (todos los módulos) | 0% | Layout + inicio + 10 módulos de vistas + actualizar controllers |
-| Guillermo Aybar | QA + Integración + Video | 0% | Testing endpoints y vistas + merge + video |
-| **TODOS** | **VIDEO** | **0%** | Grabar y editar demostración |
-
 
