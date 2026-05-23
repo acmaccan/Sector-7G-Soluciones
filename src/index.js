@@ -5,7 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { connectDB, MONGODB_URI, PORT, SESSION_SECRET } from './config/app.config.js';
 import { errorMiddleware, notFoundMiddleware } from './middlewares/error.middleware.js';
-import { setLocals } from './middlewares/auth.middleware.js';
+import { requireAuth, setLocals } from './middlewares/auth.middleware.js';
 import { router } from './routes/index.routes.js';
 import { authRouter } from './routes/auth.routes.js';
 
@@ -44,7 +44,7 @@ app.use((req, res, next) => {
 });
 
 app.use(authRouter);
-app.use(router);
+app.use(requireAuth, router);
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
