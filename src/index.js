@@ -5,7 +5,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { connectDB, MONGODB_URI, PORT, SESSION_SECRET } from './config/app.config.js';
 import { errorMiddleware, notFoundMiddleware } from './middlewares/error.middleware.js';
+import { requireAuth, setLocals } from './middlewares/auth.middleware.js';
 import { router } from './routes/index.routes.js';
+import { authRouter } from './routes/auth.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,15 +32,19 @@ app.use(
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: { secure: false },
   }),
 );
+
+app.use(setLocals);
 
 app.use((req, res, next) => {
   res.locals.usuario = req.session?.usuario ?? null;
   next();
 });
 
-app.use(router);
+app.use(authRouter);
+app.use(requireAuth, router);
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
