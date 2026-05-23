@@ -20,6 +20,32 @@ html(lang="es")
 
 block content
   style.
+    .session-panel {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 20px auto;
+    }
+    .session-user {
+      color: #8be9fd;
+      font-weight: bold;
+    }
+    .session-logout {
+      background: none;
+      border: 1px solid #ff79c6;
+      color: #ff79c6;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+    .session-logout:hover {
+      background-color: rgba(255, 121, 198, 0.12);
+    }
     .dashboard-header { text-align: center; margin-bottom: 40px; }
     .dashboard-header h1 { color: #50fa7b; font-size: 2.5em; margin-bottom: 10px; }
     .dashboard-header p { color: #6272a4; font-size: 1.1em; }
@@ -66,6 +92,12 @@ block content
       transition: background-color 0.2s;
     }
     .btn-ingresar:hover { background-color: #6272a4; color: #50fa7b; }
+
+  if usuarioSesion
+    .session-panel
+      span.session-user= `Usuario: ${usuarioSesion.usuario}`
+      form(action="/logout" method="POST" style="margin:0")
+        button.session-logout(type="submit") Salir
 
   .dashboard-header
     h1 Talento Evolutivo S.A.
