@@ -435,21 +435,14 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 
 ### Alcance propuesto (reservado para Entrega 3)
 
+### Asignación
+
+### **Responsable:** Andrea Maccan (`amaccan`) - Entregables esperados
+
 - [ ] Pantalla y servicio de alta de usuarios.
 - [ ] Acceso al alta de usuarios solo para roles `admin` u `operador`.
 - [ ] Restringir todas las pantallas actuales para que solo puedan acceder `admin` u `operador`.
-- [ ] Permitir acceso a la funcionalidad de novedades (crear, editar y detalle) para todos los roles.
-
-### Asignación
-
-**Responsable:** Andrea Maccan (`amaccan`)
-
-### Entregables esperados
-
-- `src/controllers/view/usuario.controller.js` (alta de usuarios)
-- `views/usuarios/form.pug` (formulario de registro)
-- Rutas y middleware de autorización por rol actualizados (`auth.routes.js`, `index.routes.js`, `auth.middleware.js`)
-- Validación de permisos documentada en README + casos Happy/Sad Path de acceso por rol
+- [ ] Permitir acceso a la funcionalidad de novedades (crear, editar y detalle) para todos los roles. Especialmente para el rol `cliente`, que solo podrá ver sus propias novedades.
 
 ---
 
