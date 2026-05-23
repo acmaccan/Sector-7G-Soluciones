@@ -213,7 +213,7 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 - [ ] Actualizar `README.md` con instrucciones de instalación de MongoDB local y uso del seed
 - [ ] Eliminar `src/db/json.store.js` (ya no se usa en ningún módulo)
 
-> ⚠️ **Requisito previo para todo el equipo:** cada integrante debe tener instalado **MongoDB Community Server** ([mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)) con el servicio corriendo. Se recomienda **MongoDB Compass** para visualizar datos (útil para el video).
+> **Requisito previo para todo el equipo:** cada integrante debe tener instalado **MongoDB Community Server** ([mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)) con el servicio corriendo. Se recomienda **MongoDB Compass** para visualizar datos (útil para el video).
 
 #### Schemas y persistencia
 - [ ] Crear `src/models/empresa.js`: `nombre`, `cuit`, `activa`, `convenio` (enum: `'general'`, `'docente'`, `'sanidad'`, `'comercio'`, `'otro'`), `fechaCierrePeriodo` (Number 1–28), `fechaAlta`, `timestamps`
@@ -240,8 +240,6 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 
 ### **Sebastián Sosa** (`Animas-Ss`) — Schemas: Novedad, Seguimiento + Vistas novedades/seguimientos
 
-> El esqueleto de autenticación (`auth.routes.js`, `auth.controllers.js`, `auth.services.js`, `auth.models.js`) creado en la primera entrega queda como base para que **Andrea** lo complete en esta instancia.
-
 #### Schemas y persistencia
 - [ ] Crear `src/models/novedad.js`: `empleadoId` (`ref: 'Empleado'`), `empresaId` (`ref: 'Empresa'`), `tipo`, `estado` (enum: `'pendiente'`, `'procesada'`, `'rechazada'`), `descripcion`, `timestamps`
 - [ ] Crear `src/models/seguimiento.js`: `novedadId` (`ref: 'Novedad'`), `estado`, `observacion`, `timestamps`
@@ -263,8 +261,6 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 ---
 
 ### **Andrea Maccan** (`amaccan`) — Autenticación completa (bcrypt + express-session)
-
-> Tarea cohesionada de punta a punta: modelo → lógica → middleware → vistas. Base disponible: esqueleto de `auth.*` creado por Sebastián en la primera entrega.
 
 #### Schema y persistencia
 - [ ] Crear `src/models/usuario.js`: `usuario` (único), `password` (hasheado con bcrypt), `rol` (enum: `'admin'`, `'operador'`), `timestamps`

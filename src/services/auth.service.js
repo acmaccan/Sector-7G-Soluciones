@@ -1,9 +1,10 @@
+import bcrypt from 'bcrypt';
+import { Usuario } from '../models/usuario.js';
+
 /**
  * Servicio de autenticación
  * Lógica de login/logout.
- * TODO (3ra entrega): hashear contraseñas con bcrypt.
  */
-import { Usuario } from '../models/usuario.js';
 
 /**
  * Busca el usuario en la DB y compara la contraseña.
@@ -16,8 +17,8 @@ export const login = async (usuario, password) => {
   const usuarioDoc = await Usuario.findOne({ usuario });
   if (!usuarioDoc) throw new Error('Credenciales inválidas');
 
-  // TODO (3ra entrega): reemplazar por bcrypt.compare(password, usuarioDoc.password)
-  if (password !== usuarioDoc.password) throw new Error('Credenciales inválidas');
+  const passwordOk = await bcrypt.compare(password, usuarioDoc.password);
+  if (!passwordOk) throw new Error('Credenciales inválidas');
 
   return usuarioDoc;
 };

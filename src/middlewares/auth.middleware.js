@@ -20,10 +20,15 @@ export const requireAuth = (req, res, next) => {
  */
 export const requireAdmin = (req, res, next) => {
   if (req.session?.usuario?.rol !== 'admin') {
-    return res.status(403).render('error', {
-      titulo: 'Acceso denegado',
-      mensaje: 'No tenés permisos para acceder a esta sección.',
-    });
+    if (req.originalUrl.startsWith('/api/')) {
+      return res.status(403).json({
+        error: true,
+        statusCode: 403,
+        message: 'No tenés permisos para acceder a esta sección.',
+      });
+    }
+
+    return res.redirect('/');
   }
   next();
 };

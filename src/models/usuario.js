@@ -1,9 +1,9 @@
+import mongoose from 'mongoose';
+
 /**
  * Modelo Mongoose — Usuario
- * Representa a los usuarios del sistema (administradores y operadores).
- * TODO (3ra entrega): almacenar contraseñas hasheadas con bcrypt.
+ * Representa a los usuarios del sistema (administradores, operadores y clientes).
  */
-import mongoose from 'mongoose';
 
 const usuarioSchema = new mongoose.Schema(
   {
@@ -20,11 +20,16 @@ const usuarioSchema = new mongoose.Schema(
     rol: {
       type: String,
       enum: {
-        values: ['admin', 'operador'],
-        message: 'El rol debe ser "admin" u "operador"',
+        values: ['admin', 'operador', 'cliente'],
+        message: 'El rol debe ser "admin", "operador" o "cliente"',
       },
       default: 'operador',
       required: true,
+    },
+    empleadoId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Empleado',
+      default: null,
     },
   },
   { timestamps: true }

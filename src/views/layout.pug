@@ -43,20 +43,20 @@ html(lang="es")
     header
       nav
         ul
+          if usuarioSesion
             li: a(href="/index") Inicio
             li: a(href="/empresas") Empresas
             li: a(href="/empleados") Empleados
-            li: a(href="#") Liquidaciones
+            li: a(href="/liquidaciones") Liquidaciones
             li: a(href="/socios") Socios
-            li: a(href="#") Novedades
-            li: a(href="#") Seguimientos
+            li: a(href="/novedades") Novedades
+            li: a(href="/seguimientos") Seguimientos
             li: a(href="/resumen") Reportes
-            li: a(href="#") Auditoría
-            if usuarioSesion
-              //- TODO: agregar link a /usuarios/nuevo cuando se implemente el alta de usuarios
-              li
-                form(action="/logout" method="POST" style="margin:0")
-                  button(type="submit" style="background:none;border:none;color:#ff79c6;font-weight:bold;cursor:pointer;font-size:1rem;padding:0") Salir (#{usuarioSesion.usuario})
+            li: a(href="/auditoria") Auditoría
+          if usuarioSesion
+            li
+              form(action="/logout" method="POST" style="margin:0")
+                button(type="submit" style="background:none;border:none;color:#ff79c6;font-weight:bold;cursor:pointer;font-size:1rem;padding:0") Salir (#{usuarioSesion.usuario})
     main
       //- Contenido 
       block content
