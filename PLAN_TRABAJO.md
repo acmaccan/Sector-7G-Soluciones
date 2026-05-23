@@ -158,11 +158,11 @@ El sistema deberá organizarse siguiendo una arquitectura modular, validar datos
 
 | Integrante | Módulos | Estado |
 |------------|---------|--------|
-| Sebastián Sosa | Auth (base), README, Setup Pug | ✅ Completado |
-| Florencia Marcazzo | Empresa, Empleado, Novedad, Seguimiento, Auditoría, Reporte | ✅ Completado |
-| Andrea Maccan | Liquidaciones + Socios | ✅ Completado |
-| Cecilia Gómez | Todas las vistas Pug (todos los módulos) | ✅ Completado |
-| Guillermo Aybar | QA + Integración + Video | ✅ Completado |
+| Sebastián Sosa | Auth (base), README, Setup Pug | Completado |
+| Florencia Marcazzo | Empresa, Empleado, Novedad, Seguimiento, Auditoría, Reporte | Completado |
+| Andrea Maccan | Liquidaciones + Socios | Completado |
+| Cecilia Gómez | Todas las vistas Pug (todos los módulos) | Completado |
+| Guillermo Aybar | QA + Integración + Video | Completado |
 
 ---
 
@@ -195,40 +195,38 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 
 ### **Florencia Marcazzo** (`Floh2023`) — Setup MongoDB + Schemas: Empresa, Empleado
 
-> Base más sólida del proyecto: Florencia toma el setup de infraestructura por su conocimiento integral de la arquitectura, y migra los dos módulos centrales del sistema de los que dependen el resto.
-
 #### Setup y configuración
-- [ ] Instalar dependencias: `mongoose`, `bcrypt`, `express-session` (`npm install mongoose bcrypt express-session`)
-- [ ] Crear archivo `.env` con las variables necesarias:
+- [X] Instalar dependencias: `mongoose`, `bcrypt`, `express-session` (`npm install mongoose bcrypt express-session`)
+- [X] Crear archivo `.env` con las variables necesarias:
   ```
   PORT=3000
   MONGODB_URI=mongodb://localhost:27017/talento-evolutivo
   SESSION_SECRET=una_clave_secreta_larga
   ```
-- [ ] Crear archivo `.env.example` con las mismas variables pero sin valores sensibles
-- [ ] Agregar `.env` al `.gitignore`
-- [ ] Actualizar `src/config/app.config.js`: leer variables de entorno, exportar función `connectDB()` con `mongoose.connect()`
-- [ ] Actualizar `src/index.js`: llamar a `connectDB()` al iniciar, registrar `express-session` como middleware global
-- [ ] Agregar script `"seed": "node src/db/seed.js"` en `package.json`
-- [ ] Actualizar `README.md` con instrucciones de instalación de MongoDB local y uso del seed
+- [X] Crear archivo `.env.example` con las mismas variables pero sin valores sensibles
+- [X] Agregar `.env` al `.gitignore`
+- [X] Actualizar `src/config/app.config.js`: leer variables de entorno, exportar función `connectDB()` con `mongoose.connect()`
+- [X] Actualizar `src/index.js`: llamar a `connectDB()` al iniciar, registrar `express-session` como middleware global
+- [X] Agregar script `"seed": "node src/db/seed.js"` en `package.json`
+- [X] Actualizar `README.md` con instrucciones de instalación de MongoDB local y uso del seed
 - [ ] Eliminar `src/db/json.store.js` (ya no se usa en ningún módulo)
 
 > **Requisito previo para todo el equipo:** cada integrante debe tener instalado **MongoDB Community Server** ([mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)) con el servicio corriendo. Se recomienda **MongoDB Compass** para visualizar datos (útil para el video).
 
 #### Schemas y persistencia
-- [ ] Crear `src/models/empresa.js`: `nombre`, `cuit`, `activa`, `convenio` (enum: `'general'`, `'docente'`, `'sanidad'`, `'comercio'`, `'otro'`), `fechaCierrePeriodo` (Number 1–28), `fechaAlta`, `timestamps`
-- [ ] Crear `src/models/empleado.js`: `nombre`, `apellido`, `dni`, `empresaId` (`ref: 'Empresa'`), `activo`, `timestamps`
-- [ ] Reescribir `src/db/empresa.db.js` con Mongoose (`find`, `findById`, `save`, `findByIdAndUpdate`)
-- [ ] Reescribir `src/db/empleado.db.js` con Mongoose, usando `populate('empresaId')`
+- [X] Crear `src/models/empresa.js`: `nombre`, `cuit`, `activa`, `convenio` (enum: `'general'`, `'docente'`, `'sanidad'`, `'comercio'`, `'otro'`), `fechaCierrePeriodo` (Number 1–28), `fechaAlta`, `timestamps`
+- [X] Crear `src/models/empleado.js`: `nombre`, `apellido`, `dni`, `empresaId` (`ref: 'Empresa'`), `activo`, `timestamps`
+- [X] Reescribir `src/db/empresa.db.js` con Mongoose (`find`, `findById`, `save`, `findByIdAndUpdate`)
+- [X] Reescribir `src/db/empleado.db.js` con Mongoose, usando `populate('empresaId')`
 
 #### Vistas
-- [ ] Actualizar `views/empresas/form.pug`: agregar selector de `convenio` y campo `fechaCierrePeriodo`
-- [ ] Actualizar `views/empresas/detalle.pug` e `index.pug`: mostrar `convenio` y `fechaCierrePeriodo`
-- [ ] Actualizar `views/empleados/`: usar `empleado._id`, mostrar `empleado.empresaId.nombre` (populate)
+- [X] Actualizar `views/empresas/form.pug`: agregar selector de `convenio` y campo `fechaCierrePeriodo`
+- [X] Actualizar `views/empresas/detalle.pug` e `index.pug`: mostrar `convenio` y `fechaCierrePeriodo`
+- [X] Actualizar `views/empleados/`: usar `empleado._id`, mostrar `empleado.empresaId.nombre` (populate)
 
 #### Seed (estructura base + sección propia)
-- [ ] Crear `src/db/seed.js` con la estructura base (conexión, limpieza, orden de carga)
-- [ ] Agregar datos de prueba: **empresas** (4–5 con distintos convenios) y **empleados** (6–8 distribuidos)
+- [X] Crear `src/db/seed.js` con la estructura base (conexión, limpieza, orden de carga)
+- [X] Agregar datos de prueba: **empresas** (4–5 con distintos convenios) y **empleados** (6–8 distribuidos)
 
 **Entregables clave:**
 - `src/config/app.config.js` con `connectDB()`, `.env.example`, `.gitignore` actualizados
@@ -263,35 +261,35 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 ### **Andrea Maccan** (`amaccan`) — Autenticación completa (bcrypt + express-session)
 
 #### Schema y persistencia
-- [ ] Crear `src/models/usuario.js`: `usuario` (único), `password` (hasheado con bcrypt), `rol` (enum: `'admin'`, `'operador'`), `timestamps`
+- [x] Crear `src/models/usuario.js`: `usuario` (único), `password` (hasheado con bcrypt), `rol` (enum: `'admin'`, `'operador'`, `'cliente'`), `timestamps`
 
 #### Lógica de autenticación
-- [ ] Completar `src/services/auth.service.js`:
+- [x] Completar `src/services/auth.service.js`:
   - `login(usuario, password)`: busca en DB, compara con `bcrypt.compare()`, retorna el usuario o lanza error
   - `logout()`: destruye la sesión
-- [ ] Completar `src/controllers/view/auth.controller.js`:
+- [x] Completar `src/controllers/view/auth.controller.js`:
   - `GET /login`: renderiza `views/auth/login.pug`
   - `POST /login`: llama al service, guarda `req.session.usuario`, redirige a `/`
   - `POST /logout`: destruye sesión, redirige a `/login`
-- [ ] Completar `src/routes/auth.routes.js`: montar rutas de login/logout
+- [x] Completar `src/routes/auth.routes.js`: montar rutas de login/logout
 - [ ] Crear `src/controllers/view/usuario.controller.js`:
   - `GET /usuarios/nuevo`: renderiza formulario de alta (solo admin)
   - `POST /usuarios`: crea usuario con password hasheado con `bcrypt.hash()`
 
 #### Middleware y protección de rutas
-- [ ] Crear `src/middlewares/auth.middleware.js`:
+- [x] Crear `src/middlewares/auth.middleware.js`:
   - `requireAuth`: verifica `req.session.usuario`, redirige a `/login` si no hay sesión
   - `requireAdmin`: verifica `req.session.usuario.rol === 'admin'`, retorna 403 si no
-- [ ] Aplicar `requireAuth` en `src/routes/index.routes.js` para proteger todas las rutas
-- [ ] Pasar `req.session.usuario` como variable local a las vistas en un middleware global (para que Pug muestre/oculte opciones según rol)
+- [x] Aplicar `requireAuth` en `src/routes/index.routes.js` para proteger todas las rutas
+- [x] Pasar `req.session.usuario` como variable local a las vistas en un middleware global (para que Pug muestre/oculte opciones según rol)
 
 #### Vistas de auth
-- [ ] Crear `views/auth/login.pug`: formulario usuario/password, mensaje de error si credenciales incorrectas
-- [ ] Agregar link de **Logout** en `views/layout.pug` (visible solo si hay sesión activa)
+- [x] Crear `views/auth/login.pug`: formulario usuario/password, mensaje de error si credenciales incorrectas
+- [x] Agregar link de **Logout** en `views/layout.pug` (visible solo si hay sesión activa)
 - [ ] Crear `views/usuarios/form.pug`: formulario de alta de usuario con selector de rol (solo accesible para admin)
 
 #### Seed (sección propia)
-- [ ] Agregar al `seed.js`: usuario **admin** y usuario **operador** con passwords hasheados con `bcrypt`
+- [x] Agregar al `seed.js`: usuario **admin** y usuario **operador** con passwords hasheados con `bcrypt`
 
 **Entregables clave:**
 - `src/models/usuario.js` + `auth.service.js`, `auth.controller.js`, `auth.routes.js` completos
@@ -430,6 +428,28 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 | Andrea Maccan | Schema `usuario` + auth completo: bcrypt + session + middleware + controller + vistas login/usuario | 🔴 Alta (depende del setup) |
 | Cecilia Gómez | Schemas/db.js: `liquidacion`, `socio` + vistas liquidaciones/socios + seed | 🟡 Media (depende de empresa/empleado) |
 | Guillermo Aybar | Schema/db.js `auditoria` + reporte + `error.middleware.js` + QA + OpenAPI + docs + video | 🟡 Media (depende de todo) |
+
+---
+
+## TERCERA ENTREGA — Gestión de usuarios y control de acceso por roles
+
+### Alcance propuesto (reservado para Entrega 3)
+
+- [ ] Pantalla y servicio de alta de usuarios.
+- [ ] Acceso al alta de usuarios solo para roles `admin` u `operador`.
+- [ ] Restringir todas las pantallas actuales para que solo puedan acceder `admin` u `operador`.
+- [ ] Permitir acceso a la funcionalidad de novedades (crear, editar y detalle) para todos los roles.
+
+### Asignación
+
+**Responsable:** Andrea Maccan (`amaccan`)
+
+### Entregables esperados
+
+- `src/controllers/view/usuario.controller.js` (alta de usuarios)
+- `views/usuarios/form.pug` (formulario de registro)
+- Rutas y middleware de autorización por rol actualizados (`auth.routes.js`, `index.routes.js`, `auth.middleware.js`)
+- Validación de permisos documentada en README + casos Happy/Sad Path de acceso por rol
 
 ---
 
