@@ -3,6 +3,7 @@ extends ../layout
 block content
   .container
     h1= titulo
+    #errorMsg(style="display:none; background:#c0392b; color:white; padding:12px 16px; border-radius:8px; margin-bottom:16px; max-width:600px;") 
     form(id="novedadForm" style="max-width: 600px; background: #2a2a40; padding: 30px; border-radius: 12px;")
       input(type="hidden" name="id" value=novedad ? (novedad._id || novedad.id) : "")
       
@@ -47,20 +48,34 @@ block content
   script.
     document.getElementById('novedadForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.style.display = 'none';
+      const btn = e.target.querySelector('button[type=submit]');
+      btn.disabled = true;
+      btn.textContent = 'Guardando...';
       const formData = Object.fromEntries(new FormData(e.target));
       const id = formData.id;
       const method = id ? 'PUT' : 'POST';
       const url = id ? `/api/novedades/${id}` : '/api/novedades';
-      
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      if (res.ok) { 
-        window.location.href = '/novedades'; 
-      } else {
-        const errorData = await res.json().catch(() => ({}));
-        alert('Error: ' + (errorData.message || 'No se pudo guardar la novedad.'));
+      try {
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+        if (res.ok) { 
+          window.location.href = '/novedades'; 
+        } else {
+          const errorData = await res.json().catch(() => ({}));
+          errorMsg.textContent = '⚠️ ' + (errorData.message || 'No se pudo guardar la novedad.');
+          errorMsg.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = id ? 'Guardar Cambios' : 'Crear Novedad';
+        }
+      } catch(err) {
+        errorMsg.textContent = '⚠️ Error de red: ' + err.message;
+        errorMsg.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = id ? 'Guardar Cambios' : 'Crear Novedad';
       }
     });

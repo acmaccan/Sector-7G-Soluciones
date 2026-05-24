@@ -29,7 +29,7 @@ const validarRelacionEmpleadoEmpresa = async (empleadoId, empresaId) => {
     throw badRequest("La empresa indicada no existe.");
   }
 
-  if (!empleado.activo || !empresa.activo) {
+  if (!empleado.activo || !empresa.activa) {
     throw badRequest("Empleado o empresa inactivos.");
   }
 
