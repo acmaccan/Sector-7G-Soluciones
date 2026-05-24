@@ -350,9 +350,9 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 - [x] Verificar bundle `npm run docs:bundle`
 
 #### Video
-- [ ] Coordinar grabación: cada integrante explica su parte (requisito de la consigna)
-- [ ] Mostrar: conexión a MongoDB en Compass, login/logout, flujo completo, un error manejado correctamente
-- [ ] Subir a YouTube/Drive con permisos de visualización habilitados
+- [x] Coordinar grabación: cada integrante explica su parte (requisito de la consigna)
+- [x] Mostrar: conexión a MongoDB en Compass, login/logout, flujo completo, un error manejado correctamente
+- [x] Subir a YouTube/Drive con permisos de visualización habilitados
 
 **Entregables clave:**
 - Schema `auditoria` + `auditoria.db.js` reescrito + `reporte.service.js` funcional

@@ -8,26 +8,35 @@ const toPlainSeguimiento = (doc) => {
 
 export const seguimientoDb = {
   async getAll() {
-    const rows = await Seguimiento.find().populate("novedadId").lean();
+    const rows = await Seguimiento.find()
+      .populate({ path: "novedadId", populate: "empleadoId empresaId" })
+      .lean();
     return rows.map((row) => ({ ...row, id: String(row._id) }));
   },
 
   async getById(id) {
     if (!id) return null;
-    const doc = await Seguimiento.findById(id).populate("novedadId");
+    const doc = await Seguimiento.findById(id).populate({
+      path: "novedadId",
+      populate: "empleadoId empresaId",
+    });
     return toPlainSeguimiento(doc);
   },
 
   async create(entity) {
     const doc = await Seguimiento.create(entity);
-    const populated = await Seguimiento.findById(doc._id).populate("novedadId");
+    const populated = await Seguimiento.findById(doc._id).populate({
+      path: "novedadId",
+      populate: "empleadoId empresaId",
+    });
     return toPlainSeguimiento(populated);
   },
 
   async update(id, changes) {
-    const doc = await Seguimiento.findByIdAndUpdate(id, changes, { new: true }).populate(
-      "novedadId",
-    );
+    const doc = await Seguimiento.findByIdAndUpdate(id, changes, { new: true }).populate({
+      path: "novedadId",
+      populate: "empleadoId empresaId",
+    });
     return toPlainSeguimiento(doc);
   },
 
@@ -36,7 +45,10 @@ export const seguimientoDb = {
       id,
       { activo: false },
       { new: true },
-    ).populate("novedadId");
+    ).populate({
+      path: "novedadId",
+      populate: "empleadoId empresaId",
+    });
     return toPlainSeguimiento(doc);
   },
 };

@@ -68,10 +68,10 @@ export const listarSeguimientos = async ({ empresaId, novedadId, activo } = {}) 
     .map((seguimiento) => {
       const novedad = seguimiento.novedadId;
       const empleado = novedad
-        ? (novedad.empleadoId?._id ? novedad.empleadoId : empleados.find((item) => String(item.id) === String(novedad.empleadoId)))
+        ? (novedad.empleadoId && novedad.empleadoId.nombre ? novedad.empleadoId : empleados.find((item) => String(item.id) === String(novedad.empleadoId)))
         : null;
       const empresa = novedad
-        ? (novedad.empresaId?._id ? novedad.empresaId : empresas.find((item) => String(item.id) === String(novedad.empresaId)))
+        ? (novedad.empresaId && novedad.empresaId.nombre ? novedad.empresaId : empresas.find((item) => String(item.id) === String(novedad.empresaId)))
         : null;
 
       return buildSeguimientoView(seguimiento, novedad, empleado, empresa);
@@ -91,10 +91,10 @@ export const obtenerSeguimiento = async (id) => {
 
   const novedad = seguimiento.novedadId;
   const empleado = novedad
-    ? (novedad.empleadoId?._id ? novedad.empleadoId : empleados.find((item) => String(item.id) === String(novedad.empleadoId)))
+    ? (novedad.empleadoId && novedad.empleadoId.nombre ? novedad.empleadoId : empleados.find((item) => String(item.id) === String(novedad.empleadoId)))
     : null;
   const empresa = novedad
-    ? (novedad.empresaId?._id ? novedad.empresaId : empresas.find((item) => String(item.id) === String(novedad.empresaId)))
+    ? (novedad.empresaId && novedad.empresaId.nombre ? novedad.empresaId : empresas.find((item) => String(item.id) === String(novedad.empresaId)))
     : null;
 
   return buildSeguimientoView(seguimiento, novedad, empleado, empresa);
