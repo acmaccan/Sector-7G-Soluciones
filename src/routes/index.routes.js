@@ -7,6 +7,8 @@ import { viewRouter as seguimientosView,   apiRouter as seguimientosApi   } from
 import { viewRouter as liquidacionesView,  apiRouter as liquidacionesApi  } from "./liquidaciones.routes.js";
 import { viewRouter as auditoriaView,      apiRouter as auditoriaApi      } from "./auditoria.routes.js";
 import { router as resumenRouter } from "./resumen.routes.js";
+import { obtenerResumen } from "../services/reporte.service.js";
+import { asyncHandler } from "../libs/asyncHandler.js";
 
 const router = Router();
 
@@ -53,5 +55,8 @@ router.use("/api/novedades",     novedadesApi);
 router.use("/api/seguimientos",  seguimientosApi);
 router.use("/api/liquidaciones", liquidacionesApi);
 router.use("/api/auditoria",     auditoriaApi);
+router.get("/api/resumen",       asyncHandler(async (req, res) => {
+  res.json(await obtenerResumen());
+}));
 
 export { router };

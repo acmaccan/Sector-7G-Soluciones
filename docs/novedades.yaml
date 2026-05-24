@@ -23,7 +23,8 @@ paths:
       parameters:
         - name: empresaId
           in: query
-          schema: { type: integer }
+          schema: { type: string }
+          example: "6a132fef0c8a9e3f79824020"
         - name: estado
           in: query
           schema: { type: string, enum: [pendiente, procesada, rechazada] }
@@ -55,8 +56,8 @@ paths:
               tipo: "Licencia"
               descripcion: "Licencia por estudio"
               fecha: "2026-04-15"
-              empresaId: 1
-              empleadoId: 1
+              empresaId: "6a132fef0c8a9e3f79824020"
+              empleadoId: "6a132fef0c8a9e3f79824022"
       responses:
         '201':
           description: Creada
@@ -70,7 +71,8 @@ paths:
       - name: id
         in: path
         required: true
-        schema: { type: integer }
+        schema: { type: string }
+        example: "6a132fef0c8a9e3f79824024"
     get:
       tags: [Novedades]
       summary: Obtener detalle de novedad
@@ -119,13 +121,13 @@ components:
     Novedad:
       type: object
       properties:
-        id: { type: integer }
+        id: { type: string, example: "6a132fef0c8a9e3f79824024" }
         tipo: { type: string }
         descripcion: { type: string }
         fecha: { type: string, format: date }
         estado: { type: string, enum: [pendiente, procesada, rechazada] }
-        empresaId: { type: integer }
-        empleadoId: { type: integer }
+        empresaId: { type: string, example: "6a132fef0c8a9e3f79824020" }
+        empleadoId: { type: string, example: "6a132fef0c8a9e3f79824022" }
         activo: { type: boolean }
         createdAt: { type: string, format: date-time }
         updatedAt: { type: string, format: date-time }
@@ -146,8 +148,8 @@ components:
         tipo: { type: string }
         descripcion: { type: string }
         fecha: { type: string, format: date }
-        empresaId: { type: integer }
-        empleadoId: { type: integer }
+        empresaId: { type: string }
+        empleadoId: { type: string }
         estado: { type: string, enum: [pendiente, procesada, rechazada] }
 
     NovedadUpdate:
@@ -158,8 +160,8 @@ components:
         descripcion: { type: string }
         fecha: { type: string, format: date }
         estado: { type: string, enum: [pendiente, procesada, rechazada] }
-        empresaId: { type: integer }
-        empleadoId: { type: integer }
+        empresaId: { type: string }
+        empleadoId: { type: string }
 
     Error:
       type: object

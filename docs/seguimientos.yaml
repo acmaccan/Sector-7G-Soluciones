@@ -23,10 +23,12 @@ paths:
         - name: empresaId
           in: query
           description: Filtra seguimientos de novedades pertenecientes a una empresa.
-          schema: { type: integer }
+          schema: { type: string }
+          example: "6a132fef0c8a9e3f79824020"
         - name: novedadId
           in: query
-          schema: { type: integer }
+          schema: { type: string }
+          example: "6a132fef0c8a9e3f79824024"
         - name: activo
           in: query
           schema: { type: boolean }
@@ -50,7 +52,7 @@ paths:
             schema:
               $ref: '#/components/schemas/SeguimientoInput'
             example:
-              novedadId: 1
+              novedadId: "6a132fef0c8a9e3f79824024"
               fecha: "2026-04-15"
               responsable: "Mesa operativa"
               comentario: "Seguimiento inicial registrado."
@@ -65,7 +67,8 @@ paths:
       - name: id
         in: path
         required: true
-        schema: { type: integer }
+        schema: { type: string }
+        example: "6a132fef0c8a9e3f79824026"
     get:
       tags: [Seguimientos]
       summary: Obtener detalle de seguimiento
@@ -104,8 +107,8 @@ components:
     Seguimiento:
       type: object
       properties:
-        id: { type: integer }
-        novedadId: { type: integer }
+        id: { type: string, example: "6a132fef0c8a9e3f79824026" }
+        novedadId: { type: string, example: "6a132fef0c8a9e3f79824024" }
         fecha: { type: string, format: date }
         responsable: { type: string }
         comentario: { type: string }
@@ -126,7 +129,7 @@ components:
       type: object
       required: [novedadId, fecha, responsable, comentario]
       properties:
-        novedadId: { type: integer }
+        novedadId: { type: string }
         fecha: { type: string, format: date }
         responsable: { type: string }
         comentario: { type: string }
@@ -135,7 +138,7 @@ components:
       type: object
       minProperties: 1
       properties:
-        novedadId: { type: integer }
+        novedadId: { type: string }
         fecha: { type: string, format: date }
         responsable: { type: string }
         comentario: { type: string }

@@ -69,24 +69,39 @@ components:
         indicadores:
           type: object
           properties:
-            totalEmpresas: { type: integer }
-            totalEmpleados: { type: integer }
-            novedadesPendientes: { type: integer }
-            cargaOperativa: { type: string }
-        impacto:
+            empresasActivas: { type: integer, example: 5 }
+            empleadosActivos: { type: integer, example: 10 }
+            novedadesPendientes: { type: integer, example: 3 }
+            cargaOperativaEstimada:
+              type: object
+              properties:
+                totalNovedadesActivas: { type: integer, example: 5 }
+                nivel: { type: string, example: "medio" }
+        simulacion:
           type: object
-          description: Datos de simulación de impacto
+          properties:
+            criterio: { type: string, example: "impacto calculado por cantidad de novedades activas" }
+            impactoGeneral: { type: string, example: "medio" }
+            detallePorEmpresa:
+              type: array
+              items:
+                type: object
+                properties:
+                  empresaId: { type: string, example: "6a132fef0c8a9e3f79824020" }
+                  empresa: { type: string, example: "Talento Evolutivo S.A." }
+                  totalNovedades: { type: integer, example: 2 }
+                  pendientes: { type: integer, example: 1 }
+                  impactoEstimado: { type: string, example: "bajo" }
 
     Auditoria:
       type: object
       properties:
-        id: { type: integer }
-        fecha: { type: string, format: date-time }
-        entidad: { type: string }
-        entidadId: { type: integer }
-        accion: { type: string }
-        detalle: { type: string }
-        responsable: { type: string }
+        id: { type: string, example: "6a132fef0c8a9e3f79824028" }
+        fecha: { type: string, example: "24/5/2026 13:30:15" }
+        usuario: { type: string, example: "admin" }
+        modulo: { type: string, example: "EMPRESAS" }
+        accion: { type: string, example: "creacion" }
+        detalle: { type: string, example: "Se creo la empresa Orion Software SA." }
 
     Error:
       type: object

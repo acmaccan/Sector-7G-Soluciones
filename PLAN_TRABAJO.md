@@ -326,28 +326,28 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 ### **Guillermo Aybar** (`GuilleGearts`) — Schema: Auditoría + Middleware de errores + QA + Docs + Video
 
 #### Schema y persistencia
-- [ ] Crear `src/models/auditoria.js`: `entidad`, `entidadId`, `accion`, `detalle`, `timestamps`
-- [ ] Reescribir `src/db/auditoria.db.js` con Mongoose (sin populate, solo escritura/lectura)
-- [ ] Actualizar `src/services/reporte.service.js`: reemplazar lecturas JSON por `countDocuments()` y queries Mongoose
+- [x] Crear `src/models/auditoria.js`: `entidad`, `entidadId`, `accion`, `detalle`, `timestamps`
+- [x] Reescribir `src/db/auditoria.db.js` con Mongoose (sin populate, solo escritura/lectura)
+- [x] Actualizar `src/services/reporte.service.js`: reemplazar lecturas JSON por `countDocuments()` y queries Mongoose
 
 #### Middleware de errores Mongoose
-- [ ] Actualizar `src/middlewares/error.middleware.js` para capturar y convertir:
+- [x] Actualizar `src/middlewares/error.middleware.js` para capturar y convertir:
   - `ValidationError` de Mongoose → HTTP 400 con mensaje legible
   - `CastError` (ObjectId inválido) → HTTP 400 con mensaje "ID inválido"
   - `MongoServerError` código 11000 (clave duplicada) → HTTP 409 "Ya existe un registro con ese valor"
 
 #### QA
-- [ ] **Happy Path completo:** login → crear empresa → empleado → novedad → seguimiento → liquidación → logout
-- [ ] **Sad Path — auth:** login con credenciales incorrectas, acceso a ruta protegida sin sesión, acceso a ruta admin con rol operador
-- [ ] **Sad Path — datos:** `empresaId` inexistente, novedad con empleado de otra empresa, DNI duplicado en socio, `ObjectId` con formato inválido
-- [ ] Verificar que todos los errores retornan HTTP adecuado (nunca stack trace)
+- [x] **Happy Path completo:** login → crear empresa → empleado → novedad → seguimiento → liquidación → logout
+- [x] **Sad Path — auth:** login con credenciales incorrectas, acceso a ruta protegida sin sesión, acceso a ruta admin con rol operador
+- [x] **Sad Path — datos:** `empresaId` inexistente, novedad con empleado de otra empresa, DNI duplicado en socio, `ObjectId` con formato inválido
+- [x] Verificar que todos los errores retornan HTTP adecuado (nunca stack trace)
 
 #### Documentación
-- [ ] Actualizar `docs/empresas.yaml`, `docs/empleados.yaml`, `docs/novedades.yaml`, `docs/seguimientos.yaml`, `docs/resumen.yaml`: IDs a `ObjectId`, agregar campo `convenio` en empresa
-- [ ] Actualizar `docs/index.yaml` con descripción de MongoDB y auth
-- [ ] Documentar en el README (sección **Requerimientos funcionales cubiertos**) las Mejoras 1, 2 y 3 del documento de propuestas
-- [ ] Documentar en el README (sección **Requerimientos futuros**) la Mejora 4 (alertas automáticas) con justificación técnica
-- [ ] Verificar bundle `npm run docs:bundle`
+- [x] Actualizar `docs/empresas.yaml`, `docs/empleados.yaml`, `docs/novedades.yaml`, `docs/seguimientos.yaml`, `docs/resumen.yaml`: IDs a `ObjectId`, agregar campo `convenio` en empresa
+- [x] Actualizar `docs/index.yaml` con descripción de MongoDB y auth
+- [x] Documentar en el README (sección **Requerimientos funcionales cubiertos**) las Mejoras 1, 2 y 3 del documento de propuestas
+- [x] Documentar en el README (sección **Requerimientos futuros**) la Mejora 4 (alertas automáticas) con justificación técnica
+- [x] Verificar bundle `npm run docs:bundle`
 
 #### Video
 - [ ] Coordinar grabación: cada integrante explica su parte (requisito de la consigna)
@@ -390,18 +390,18 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 ## Checklist de entrega — Segunda Entrega
 
 ### Técnico
-- [ ] La app conecta a MongoDB al iniciar (log de confirmación en consola)
+- [x] La app conecta a MongoDB al iniciar (log de confirmación en consola)
 - [ ] Todos los módulos usan Mongoose (ninguno sigue usando `json.store.js`)
 - [ ] Los endpoints de relaciones usan `populate()` correctamente
-- [ ] Los errores de Mongoose (`ValidationError`, `CastError`, clave duplicada) son manejados por el middleware
+- [x] Los errores de Mongoose (`ValidationError`, `CastError`, clave duplicada) son manejados por el middleware
 - [ ] El script `seed` carga datos de prueba correctamente (incluye usuarios admin y operador con passwords hasheados)
-- [ ] Las vistas Pug funcionan correctamente con `ObjectId`
-- [ ] Las rutas están protegidas por `requireAuth` (redirige a `/login` si no hay sesión)
-- [ ] El login con bcrypt funciona correctamente
-- [ ] El logout destruye la sesión y redirige a `/login`
-- [ ] La vista de login muestra mensaje de error ante credenciales incorrectas
+- [x] Las vistas Pug funcionan correctamente con `ObjectId`
+- [x] Las rutas están protegidas por `requireAuth` (redirige a `/login` si no hay sesión)
+- [x] El login con bcrypt funciona correctamente
+- [x] El logout destruye la sesión y redirige a `/login`
+- [x] La vista de login muestra mensaje de error ante credenciales incorrectas
 - [ ] El alta de usuario solo es accesible para rol `admin`
-- [ ] Las empresas tienen campo `convenio` y `fechaCierrePeriodo`
+- [x] Las empresas tienen campo `convenio` y `fechaCierrePeriodo`
 
 ### Documentación (PDF de entrega)
 - [ ] Link al repositorio Git

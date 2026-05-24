@@ -241,4 +241,42 @@ curl "http://localhost:3000/api/auditoria?entidad=novedad"
 - `routes`: endpoints
 - `controllers`: request/response
 - `services`: reglas de negocio y validaciones cruzadas
-- `db`: acceso a JSON
+- `db`: acceso a MongoDB (Mongoose) y persistencia JSON híbrida
+
+---
+
+## Requerimientos Funcionales Cubiertos (Mejoras de la Segunda Entrega)
+
+El sistema ha sido mejorado e integrado con persistencia robusta y mecanismos de seguridad avanzados:
+
+1. **Uso de Bases de Datos en la Nube y Locales (MongoDB + Mongoose):**
+   - Migración de las entidades principales (`Empresa`, `Empleado`, `Socio`, `Liquidación` y `Auditoría`) a MongoDB.
+   - Definición de esquemas rigurosos mediante Mongoose, permitiendo validaciones nativas de campos (enums, valores mínimos/máximos, valores únicos) e integridad referencial (`ref` y `populate`).
+   - Preparado para desplegarse fácilmente en **MongoDB Atlas** configurando la variable `MONGODB_URI` en el archivo `.env`.
+
+2. **Soporte para Múltiples Roles de Usuarios (Control de Acceso):**
+   - Implementación de tres roles de usuarios diferenciados:
+     - `admin`: Permisos de administración total (incluyendo creación de usuarios y acceso a todas las secciones).
+     - `operador`: Acceso a operaciones normales (empresas, empleados, novedades, liquidaciones).
+     - `cliente`: Visualización restringida y enfocada.
+   - Vistas dinámicas en Pug que adaptan la barra de navegación y las opciones del panel de control de acuerdo con el rol guardado en la sesión.
+
+3. **Encriptación de Datos Sensibles y Seguridad:**
+   - **Hasheo de Contraseñas:** Las contraseñas se almacenan de forma segura en la base de datos utilizando hasheo criptográfico unidireccional con **bcrypt** (factor de costo 10).
+   - **Protección de Sesión:** Manejo de sesiones mediante cookies seguras y firmadas usando **express-session** para restringir el acceso a rutas protegidas (`requireAuth`).
+
+---
+
+## Requerimientos Futuros (Justificación Técnica)
+
+### Mejora 4: Sistema de Alertas Automáticas (Email y SMS)
+Como propuesta de expansión para la optimización de procesos de la consultora, se plantea el desarrollo de un **módulo de notificaciones en tiempo real** cuando se detecten eventos críticos (por ejemplo, novedades marcadas en estado "rechazada" o de prioridad "urgente").
+
+* **Justificación de Negocio:**
+  - Evita retrasos en el flujo administrativo de liquidaciones, notificando de inmediato al responsable o al empleado cuando una documentación es rechazada o requiere atención inmediata.
+* **Implementación Técnica Propuesta:**
+  - **Servicios de Terceros:**
+    - **Nodemailer:** Utilizando un servicio SMTP (como Gmail, SendGrid o AWS SES) para el envío de notificaciones detalladas por correo electrónico con formatos HTML y adjuntos.
+    - **Twilio (SMS/WhatsApp):** Para notificaciones de prioridad crítica enviadas directamente a los teléfonos móviles de los involucrados.
+  - **Patrón de Eventos (Event-Driven Architecture):**
+    - Se propone usar un emisor de eventos (`EventEmitter` nativo de Node.js) o colas de mensajería (como BullMQ con Redis) para procesar las notificaciones de forma asíncrona. Esto evita ralentizar el hilo principal de peticiones del servidor web cuando se realiza la inserción de registros.

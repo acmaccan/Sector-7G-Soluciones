@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { Usuario } from "../models/usuario.js";
 import { Liquidacion } from "../models/liquidacion.js";
 import { Socio } from "../models/socio.js";
+import { Auditoria } from "../models/auditoria.js";
 
 
 await connectDB();
@@ -13,8 +14,10 @@ await Promise.all([
   Empleado.deleteMany({}), 
   Empresa.deleteMany({}),
   Liquidacion.deleteMany({}),
-  Socio.deleteMany({})
-, Usuario.deleteMany({})]);
+  Socio.deleteMany({}),
+  Usuario.deleteMany({}),
+  Auditoria.deleteMany({})
+]);
 
 const adminPassword = await bcrypt.hash("admin123", 10);
 const clientePassword = await bcrypt.hash("cliente123", 10);

@@ -74,8 +74,8 @@ paths:
         in: path
         required: true
         schema:
-          type: integer
-        example: 1
+          type: string
+        example: "6a132fef0c8a9e3f79824020"
 
     get:
       tags: [Empresas]
@@ -144,8 +144,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          example: 1
+          type: string
+          example: "6a132fef0c8a9e3f79824020"
         nombre:
           type: string
           example: "Orion Software SA"
@@ -161,6 +161,15 @@ components:
         activo:
           type: boolean
           example: true
+        convenio:
+          type: string
+          enum: [general, docente, sanidad, comercio, otro]
+          example: "general"
+        fechaCierrePeriodo:
+          type: integer
+          minimum: 1
+          maximum: 28
+          example: 10
         createdAt:
           type: string
           format: date-time
@@ -178,7 +187,7 @@ components:
               items:
                 type: object
                 properties:
-                  id: { type: integer }
+                  id: { type: string }
                   nombre: { type: string }
                   apellido: { type: string }
             novedades:
@@ -186,7 +195,7 @@ components:
               items:
                 type: object
                 properties:
-                  id: { type: integer }
+                  id: { type: string }
                   tipo: { type: string }
                   estado: { type: string }
 
@@ -202,6 +211,14 @@ components:
           type: string
         contacto:
           type: string
+        convenio:
+          type: string
+          enum: [general, docente, sanidad, comercio, otro]
+          default: "general"
+        fechaCierrePeriodo:
+          type: integer
+          minimum: 1
+          maximum: 28
 
     EmpresaUpdate:
       type: object
@@ -211,6 +228,8 @@ components:
         cuit: { type: string }
         rubro: { type: string }
         contacto: { type: string }
+        convenio: { type: string, enum: [general, docente, sanidad, comercio, otro] }
+        fechaCierrePeriodo: { type: integer, minimum: 1, maximum: 28 }
 
     Error:
       type: object

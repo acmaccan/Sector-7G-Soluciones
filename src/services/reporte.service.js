@@ -1,8 +1,6 @@
-import { empleadoDb } from "../db/empleado.db.js";
-import { empresaDb } from "../db/empresa.db.js";
+import { Empresa } from "../models/empresa.js";
+import { Empleado } from "../models/empleado.js";
 import { novedadDb } from "../db/novedad.db.js";
-
-const activas = (rows) => rows.filter((row) => row.activo !== false);
 
 const calcularImpacto = (cantidad) => {
   if (cantidad >= 6) {
@@ -17,15 +15,13 @@ const calcularImpacto = (cantidad) => {
 };
 
 export const obtenerResumen = async () => {
-  const [empresas, empleados, novedades] = await Promise.all([
-    empresaDb.getAll(),
-    empleadoDb.getAll(),
+  const [empresasActivas, empleadosActivosCount, novedades] = await Promise.all([
+    Empresa.find({ activa: true }).lean(),
+    Empleado.countDocuments({ activo: true }),
     novedadDb.getAll(),
   ]);
 
-  const empresasActivas = activas(empresas);
-  const empleadosActivos = activas(empleados);
-  const novedadesActivas = activas(novedades);
+  const novedadesActivas = novedades.filter((novedad) => novedad.activo !== false);
   const novedadesPendientes = novedadesActivas.filter(
     (novedad) => novedad.estado === "pendiente",
   );
@@ -33,7 +29,7 @@ export const obtenerResumen = async () => {
   return {
     indicadores: {
       empresasActivas: empresasActivas.length,
-      empleadosActivos: empleadosActivos.length,
+      empleadosActivos: empleadosActivosCount,
       novedadesPendientes: novedadesPendientes.length,
       cargaOperativaEstimada: {
         totalNovedadesActivas: novedadesActivas.length,
@@ -45,11 +41,11 @@ export const obtenerResumen = async () => {
       impactoGeneral: calcularImpacto(novedadesActivas.length),
       detallePorEmpresa: empresasActivas.map((empresa) => {
         const novedadesEmpresa = novedadesActivas.filter(
-          (novedad) => novedad.empresaId === empresa.id,
+          (novedad) => String(novedad.empresaId) === String(empresa._id),
         );
 
         return {
-          empresaId: empresa.id,
+          empresaId: String(empresa._id),
           empresa: empresa.nombre,
           totalNovedades: novedadesEmpresa.length,
           pendientes: novedadesEmpresa.filter(

@@ -50,3 +50,6 @@ vite.svg
 
 # Documentación generada (artefactos, no fuente)
 docs/bundle.yaml
+
+# Trabajo personal (no incluir en github)
+trabajo Guille/

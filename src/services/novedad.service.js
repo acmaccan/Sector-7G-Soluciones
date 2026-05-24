@@ -33,7 +33,8 @@ const validarRelacionEmpleadoEmpresa = async (empleadoId, empresaId) => {
     throw badRequest("Empleado o empresa inactivos.");
   }
 
-  if (empleado.empresaId !== empresa.id) {
+  const empId = empleado.empresaId?._id ? String(empleado.empresaId._id) : String(empleado.empresaId);
+  if (empId !== String(empresa.id)) {
     throw badRequest("El empleado no pertenece a la empresa indicada.");
   }
 
@@ -91,8 +92,8 @@ export const listarNovedades = async ({ empresaId, estado, activo } = {}) => {
     .map((novedad) =>
       buildNovedadView(
         novedad,
-        empleados.find((empleado) => empleado.id === novedad.empleadoId),
-        empresas.find((empresa) => empresa.id === novedad.empresaId),
+        empleados.find((empleado) => String(empleado.id) === String(novedad.empleadoId)),
+        empresas.find((empresa) => String(empresa.id) === String(novedad.empresaId)),
         seguimientos,
       ),
     );
@@ -112,8 +113,8 @@ export const obtenerNovedad = async (id) => {
 
   return buildNovedadView(
     novedad,
-    empleados.find((empleado) => empleado.id === novedad.empleadoId),
-    empresas.find((empresa) => empresa.id === novedad.empresaId),
+    empleados.find((empleado) => String(empleado.id) === String(novedad.empleadoId)),
+    empresas.find((empresa) => String(empresa.id) === String(novedad.empresaId)),
     seguimientos,
   );
 };
