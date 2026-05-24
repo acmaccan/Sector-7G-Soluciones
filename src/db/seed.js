@@ -1,6 +1,8 @@
 import { connectDB } from "../config/app.config.js";
 import { Empresa } from "../models/empresa.js";
 import { Empleado } from "../models/empleado.js";
+import bcrypt from "bcrypt";
+import { Usuario } from "../models/usuario.js";
 import { Liquidacion } from "../models/liquidacion.js";
 import { Socio } from "../models/socio.js";
 
@@ -12,7 +14,10 @@ await Promise.all([
   Empresa.deleteMany({}),
   Liquidacion.deleteMany({}),
   Socio.deleteMany({})
-]);
+, Usuario.deleteMany({})]);
+
+const adminPassword = await bcrypt.hash("admin123", 10);
+const clientePassword = await bcrypt.hash("cliente123", 10);
 
 const empresas = await Empresa.insertMany([
   {
@@ -118,6 +123,19 @@ const empleados = await Empleado.insertMany([
     puesto: "Técnica",
     email: "gabriela.suarez@delta.com",
     empresaId: empresas[4]._id,
+  },
+]);
+
+await Usuario.insertMany([
+  {
+    usuario: "admin",
+    password: adminPassword,
+    rol: "admin",
+  },
+  {
+    usuario: "cliente",
+    password: clientePassword,
+    rol: "cliente",
   },
 ]);
 

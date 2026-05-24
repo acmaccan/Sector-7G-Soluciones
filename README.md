@@ -34,6 +34,7 @@ Requisitos:
 Instalación rápida:
 - macOS (Homebrew): `brew install mongodb-community@7` y luego `brew services start mongodb-community@7`
 - Linux: instalar `mongod` desde el repositorio oficial de MongoDB y levantar el servicio
+- Windows: descargar (MongoDB Community Server) https://www.mongodb.com/try/download/community, instalar y ejecutar `mongod`
 
 Variables de entorno:
 - Crear `.env` (ver `.env.example`)
