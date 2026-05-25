@@ -105,11 +105,15 @@ export const crearSeguimiento = async (payload) => {
 
   const seguimiento = await seguimientoDb.create(createSeguimiento(payload));
 
+  const novedadInfo = seguimiento.novedadId?._id
+    ? String(seguimiento.novedadId._id)
+    : String(seguimiento.novedadId);
+
   await registrarAuditoria({
     entidad: "seguimiento",
     entidadId: seguimiento.id,
     accion: "creacion",
-    descripcion: `Se creo el seguimiento ${seguimiento.id} para la novedad ${seguimiento.novedadId}.`,
+    descripcion: `Se creo el seguimiento ${seguimiento.id} para la novedad ${novedadInfo}.`,
   });
 
   return seguimiento;

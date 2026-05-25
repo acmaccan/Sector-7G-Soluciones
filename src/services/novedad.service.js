@@ -122,11 +122,15 @@ export const crearNovedad = async (payload) => {
 
   const novedad = await novedadDb.create(createNovedad(payload));
 
+  const empleadoInfo = novedad.empleadoId && novedad.empleadoId.nombre
+    ? `${novedad.empleadoId.nombre} ${novedad.empleadoId.apellido}`
+    : String(novedad.empleadoId);
+
   await registrarAuditoria({
     entidad: "novedad",
     entidadId: novedad.id,
     accion: "creacion",
-    descripcion: `Se creo la novedad ${novedad.tipo} para el empleado ${novedad.empleadoId}.`,
+    descripcion: `Se creo la novedad ${novedad.tipo} para el empleado ${empleadoInfo}.`,
   });
 
   return novedad;
