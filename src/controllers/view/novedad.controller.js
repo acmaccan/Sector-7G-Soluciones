@@ -4,7 +4,13 @@ import { listarEmpleados } from "../../services/empleado.service.js";
 
 class NovedadViewController {
   async getAll(req, res) {
-    const novedades = await listarNovedades(req.query);
+    const filters = { ...req.query };
+    const usuario = req.session?.usuario;
+    console.log(usuario)
+    if (usuario?.rol === 'cliente') {
+      filters.empresaId = String(usuario.empresaId);
+    }
+    const novedades = await listarNovedades(filters);
     res.render('novedades/index', {
       titulo: 'Gestión de Novedades',
       novedades,
@@ -26,6 +32,13 @@ class NovedadViewController {
 
   async getById(req, res) {
     const novedad = await obtenerNovedad(req.params.id);
+    const usuario = req.session?.usuario;
+    if (usuario?.rol === 'cliente') {
+      const novedadEmpresaId = String(novedad.empresa?.id ?? '');
+      if (novedadEmpresaId !== String(usuario.empresaId)) {
+        return res.redirect('/novedades');
+      }
+    }
     res.render('novedades/detalle', { titulo: `Detalle de Novedad #${novedad.id}`, novedad });
   }
 }

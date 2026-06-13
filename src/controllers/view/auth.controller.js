@@ -15,7 +15,7 @@ export const getLogin = (req, res) => {
  * Valida credenciales. Si son correctas, guarda el usuario en sesión y redirige.
  * Si no, vuelve a renderizar el formulario con mensaje de error.
  */
-export const postLogin = async (req, res, next) => {
+export const postLogin = async (req, res) => {
   try {
     const { usuario, password } = req.body;
 
@@ -32,10 +32,12 @@ export const postLogin = async (req, res, next) => {
       _id: usuarioDoc._id,
       usuario: usuarioDoc.usuario,
       rol: usuarioDoc.rol,
+      empresaId: usuarioDoc.empresaId ?? null,
     };
 
     res.redirect('/');
   } catch (err) {
+    console.log(err)
     res.render('auth/login', {
       titulo: 'Iniciar sesión',
       error: 'Usuario o contraseña incorrectos.',

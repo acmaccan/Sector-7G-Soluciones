@@ -9,11 +9,18 @@ import { viewRouter as auditoriaView,      apiRouter as auditoriaApi      } from
 import { router as resumenRouter } from "./resumen.routes.js";
 import { obtenerResumen } from "../services/reporte.service.js";
 import { asyncHandler } from "../libs/asyncHandler.js";
+import { MODULES_BY_ROLE } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
 // ── Vistas (HTML) ─────────────────────────────────────────────────────────────
-router.get("/",      (req, res) => res.render("index", { titulo: "Panel de Control" }));
+router.get("/", (req, res) => {
+  const rol = req.session?.usuario?.rol;
+  if (rol === 'cliente') return res.redirect('/novedades');
+  const modules = MODULES_BY_ROLE[rol] ?? MODULES_BY_ROLE.admin;
+  res.render("index", { titulo: "Panel de Control", modules });
+});
+
 router.get("/index", (req, res) => res.redirect("/"));
 
 router.use("/empleados",     empleadosView);

@@ -104,43 +104,8 @@ block content
     p Panel de Control Principal - Seleccioná un módulo para operar
 
   .grid-container
-
-    .module-card
-      h2 Empresas
-      p Gestión de clientes, rubros y estado de cuentas.
-      a.btn-ingresar(href="/empresas") Ingresar
-    
-    .module-card
-      h2 Empleados
-      p Directorio de personal, datos de contacto y asignaciones.
-      a.btn-ingresar(href="/empleados") Ingresar
-      
-    .module-card
-      h2 Novedades
-      p Carga de novedades con filtros y seguimientos detallados.
-      a.btn-ingresar(href="/novedades") Ingresar
-      
-    .module-card
-      h2 Seguimiento
-      p Control y bitácora de estados de trámites y procesos.
-      a.btn-ingresar(href="/seguimientos") Ingresar
-      
-    .module-card
-      h2 Liquidaciones
-      p Cálculo de haberes, recibos y detalles de liquidación.
-      a.btn-ingresar(href="/liquidaciones") Ingresar
-      
-    .module-card
-      h2 Socios
-      p Administración del directorio de socios y participaciones.
-      a.btn-ingresar(href="/socios") Ingresar
-
-    .module-card
-      h2 Reportes
-      p Indicadores clave, resúmenes y tablas de impacto visual.
-      a.btn-ingresar(href="/resumen") Ingresar  
-
-    .module-card
-      h2 Auditoría
-      p Registro histórico de acciones y trazabilidad del sistema.
-      a.btn-ingresar(href="/auditoria") Ingresar
+    each module in modules
+      .module-card
+        h2= module.nombre
+        p= module.desc
+        a.btn-ingresar(href=module.ruta) Ingresar

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 /**
  * Modelo Mongoose — Usuario
- * Representa a los usuarios del sistema (administradores, operadores y clientes).
+ * Representa a los usuarios del sistema (administradores, liquidadores y clientes).
  */
 
 const usuarioSchema = new mongoose.Schema(
@@ -20,16 +20,18 @@ const usuarioSchema = new mongoose.Schema(
     rol: {
       type: String,
       enum: {
-        values: ['admin', 'operador', 'cliente'],
-        message: 'El rol debe ser "admin", "operador" o "cliente"',
+        values: ['admin', 'liquidador', 'cliente'],
+        message: 'El rol debe ser "admin", "liquidador" o "cliente"',
       },
-      default: 'operador',
+      default: 'liquidador',
       required: true,
     },
-    empleadoId: {
+    empresaId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Empleado',
-      default: null,
+      ref: 'Empresa',
+      required: function() {
+        return this.rol === 'cliente';
+      }
     },
   },
   { timestamps: true }

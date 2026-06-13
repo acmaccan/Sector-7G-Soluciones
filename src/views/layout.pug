@@ -74,20 +74,12 @@ html(lang="es")
         nav
           ul
             if usuarioSesion
-              li: a(href="/index") Inicio
-              li: a(href="/empresas") Empresas
-              li: a(href="/empleados") Empleados
-              li: a(href="/liquidaciones") Liquidaciones
-              li: a(href="/socios") Socios
-              li: a(href="/novedades") Novedades
-              li: a(href="/seguimientos") Seguimientos
-              li: a(href="/resumen") Reportes
-              li: a(href="/auditoria") Auditoría
+              each mod in modulesByRole
+                li: a(href=mod.ruta)= mod.nombre
         if usuarioSesion
           .session-actions
             span.session-user= `Usuario: ${usuarioSesion.usuario}`
             form(action="/logout" method="POST" style="margin:0")
               button.logout-button(type="submit") Salir
     main
-      //- Contenido 
       block content

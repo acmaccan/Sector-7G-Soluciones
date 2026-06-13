@@ -6,5 +6,6 @@ export class AppError extends Error {
   }
 }
 
-export const badRequest = (message) => new AppError(message, 400);
-export const notFound = (message) => new AppError(message, 404);
+export const badRequest  = (message) => new AppError(message, 400);
+export const notFound   = (message) => new AppError(message, 404);
+export const forbidden  = (message) => new AppError(message, 403);

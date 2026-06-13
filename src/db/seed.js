@@ -23,6 +23,7 @@ await Promise.all([
 ]);
 
 const adminPassword = await bcrypt.hash("admin123", 10);
+const liquidadorPassword = await bcrypt.hash("liquidador123", 10);
 const clientePassword = await bcrypt.hash("cliente123", 10);
 
 const empresas = await Empresa.insertMany([
@@ -139,13 +140,25 @@ await Usuario.insertMany([
     rol: "admin",
   },
   {
-    usuario: "cliente",
+    usuario: "cliente_instituto_horizonte",
     password: clientePassword,
     rol: "cliente",
+    empresaId: empresas[1]._id,
+  },
+    {
+    usuario: "cliente_clinica_san_gabriel",
+    password: clientePassword,
+    rol: "cliente",
+    empresaId: empresas[2]._id,
+  },
+  {
+    usuario: "liquidador",
+    password: liquidadorPassword,
+    rol: "liquidador",
   },
 ]);
 
-const socios = await Socio.insertMany([
+await Socio.insertMany([
   { nombre: "Julieta", apellido: "Silva", dni: "29111222", participacion: 50 },
   { nombre: "Marcos", apellido: "Paz", dni: "31333444", participacion: 30 },
   { nombre: "Florencia", apellido: "Gómez", dni: "35999000", participacion: 20 }

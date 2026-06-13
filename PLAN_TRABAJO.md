@@ -279,7 +279,6 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 #### Middleware y protección de rutas
 - [x] Crear `src/middlewares/auth.middleware.js`:
   - `requireAuth`: verifica `req.session.usuario`, redirige a `/login` si no hay sesión
-  - `requireAdmin`: verifica `req.session.usuario.rol === 'admin'`, retorna 403 si no
 - [x] Aplicar `requireAuth` en `src/routes/index.routes.js` para proteger todas las rutas
 - [x] Pasar `req.session.usuario` como variable local a las vistas en un middleware global (para que Pug muestre/oculte opciones según rol)
 
@@ -293,7 +292,7 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 
 **Entregables clave:**
 - `src/models/usuario.js` + `auth.service.js`, `auth.controller.js`, `auth.routes.js` completos
-- `auth.middleware.js` con `requireAuth` y `requireAdmin`
+- `auth.middleware.js` con `requireAuth`
 - Vistas `login.pug`, `layout.pug` (logout), `usuarios/form.pug`
 - Sección del seed con usuarios
 
@@ -438,11 +437,9 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 ### Asignación
 
 ### **Responsable:** Andrea Maccan (`amaccan`) - Entregables esperados
+- [x] Restringir acceso a secciones (cards y navegación) según rol `admin`, `liquidador` o `cliente`.
+- [x] El rol `cliente` sólo podrá ver sus propias novedades.
 
-- [ ] Pantalla y servicio de alta de usuarios.
-- [ ] Acceso al alta de usuarios solo para roles `admin` u `operador`.
-- [ ] Restringir todas las pantallas actuales para que solo puedan acceder `admin` u `operador`.
-- [ ] Permitir acceso a la funcionalidad de novedades (crear, editar y detalle) para todos los roles. Especialmente para el rol `cliente`, que solo podrá ver sus propias novedades.
 
 ---
 
