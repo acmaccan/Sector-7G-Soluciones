@@ -430,16 +430,25 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 
 ---
 
-## TERCERA ENTREGA — Gestión de usuarios y control de acceso por roles
-
-### Alcance propuesto (reservado para Entrega 3)
+## TERCERA ENTREGA
 
 ### Asignación
 
-### **Responsable:** Andrea Maccan (`amaccan`) - Entregables esperados
+### **Responsable:** Andrea Maccan (`amaccan`)
 - [x] Restringir acceso a secciones (cards y navegación) según rol `admin`, `liquidador` o `cliente`.
 - [x] El rol `cliente` sólo podrá ver sus propias novedades.
 
+### **Responsable:** TBD
+- [ ] Deprecar `src/db/json.store.js` y su implementación, si siguiera existiendo
+- [ ] Creación de usuarios a través de formulario, al que tendrá acceso sólo el admin
+- [ ] Configurar **MongoDB Atlas**
+- [ ] Desplegar el proyecto (Render, Railway, etc.)
+- [ ] Diagramas: casos de uso, diagrama de clases, diagrama de secuencia, modelo ER
+- [ ] Documentación de pruebas (objetivo, procedimiento, resultados)
+- [ ] Bibliografía y fuentes consultadas
+- [ ] Conclusión grupal: qué aprendieron, dificultades, qué les interesó, qué reforzarían
+- [ ] Mención del uso de IA
+- [ ] Explicación de decisiones técnicas (ej: por qué se usó session en lugar de JWT)
 
 ---
 
