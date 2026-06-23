@@ -1,29 +1,6 @@
 extends ../layout
 
 block content
-  style.
-    .container { width: 100%; max-width: 1100px; margin: 0 auto; }
-    .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .header-flex h1 { color: #50fa7b; margin-top: 0; margin-bottom: 5px; }
-    .header-flex p { color: #6272a4; margin: 0; }
-    
-    /* Estilos de la barra de filtros */
-    .filter-bar { background-color: #2a2a40; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-    .filter-form { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
-    .filter-control { padding: 10px; border-radius: 6px; border: 1px solid #44475a; background-color: #1e1e2f; color: #f8f8f2; flex: 1; min-width: 150px; }
-    .filter-control:focus { outline: none; border-color: #bd93f9; }
-    .btn-filtrar { background-color: #bd93f9; color: #282a36; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
-    .btn-filtrar:hover { background-color: #ff79c6; }
-    .btn-limpiar { background-color: #44475a; color: #f8f8f2; padding: 10px 20px; border: none; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: bold; text-align: center; }
-    .btn-limpiar:hover { background-color: #6272a4; }
-    
-    /* Estilos de la tabla */
-    .data-table { width: 100%; border-collapse: collapse; background-color: #2a2a40; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-    .data-table th, .data-table td { padding: 15px; text-align: left; border-bottom: 1px solid #44475a; font-size: 14px; }
-    .data-table th { background-color: #44475a; color: #f8f8f2; text-transform: uppercase; font-size: 12px; }
-    .data-table tr:last-child td { border-bottom: none; }
-    .data-table tr:hover { background-color: #383a59; }
-    .badge-modulo { background-color: #6272a4; color: #f8f8f2; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; }
 
   .container
     .header-flex

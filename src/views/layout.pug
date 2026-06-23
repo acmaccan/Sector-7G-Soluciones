@@ -4,70 +4,9 @@ html(lang="es")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title= titulo || 'Talento Evolutivo S.A.'
-    style.
-      /* Estilos base compartidos*/
-      body { 
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-        background-color: #1e1e2f; 
-        color: #ffffff; 
-        margin: 0; 
-      }
-      header {
-        background-color: #2a2a40;
-        padding: 15px 20px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      }
-      nav ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-      }
-      .header-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-      }
-      .session-actions {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        white-space: nowrap;
-      }
-      .session-user {
-        color: #8be9fd;
-        font-weight: bold;
-      }
-      .logout-button {
-        background: none;
-        border: 1px solid #ff79c6;
-        color: #ff79c6;
-        font-weight: bold;
-        cursor: pointer;
-        font-size: 0.95rem;
-        padding: 6px 12px;
-        border-radius: 6px;
-      }
-      .logout-button:hover {
-        background-color: rgba(255, 121, 198, 0.12);
-      }
-      nav a {
-        color: #ff79c6;
-        text-decoration: none;
-        font-weight: bold;
-        transition: color 0.3s;
-      }
-      nav a:hover {
-        color: #bd93f9;
-      }
-      main {
-        padding: 40px;
-        display: flex;
-        justify-content: center;
-      }
+    link(rel="stylesheet", href="/css/styles.css")
+    
+    
   body
     header
       .header-bar
