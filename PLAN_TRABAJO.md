@@ -390,16 +390,15 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 
 ### Técnico
 - [x] La app conecta a MongoDB al iniciar (log de confirmación en consola)
-- [ ] Todos los módulos usan Mongoose (ninguno sigue usando `json.store.js`)
-- [ ] Los endpoints de relaciones usan `populate()` correctamente
+- [x] Todos los módulos usan Mongoose (ninguno sigue usando `json.store.js`)
+- [x] Los endpoints de relaciones usan `populate()` correctamente
 - [x] Los errores de Mongoose (`ValidationError`, `CastError`, clave duplicada) son manejados por el middleware
-- [ ] El script `seed` carga datos de prueba correctamente (incluye usuarios admin y operador con passwords hasheados)
+- [x] El script `seed` carga datos de prueba correctamente (incluye usuarios admin y operador con passwords hasheados)
 - [x] Las vistas Pug funcionan correctamente con `ObjectId`
 - [x] Las rutas están protegidas por `requireAuth` (redirige a `/login` si no hay sesión)
 - [x] El login con bcrypt funciona correctamente
 - [x] El logout destruye la sesión y redirige a `/login`
 - [x] La vista de login muestra mensaje de error ante credenciales incorrectas
-- [ ] El alta de usuario solo es accesible para rol `admin`
 - [x] Las empresas tienen campo `convenio` y `fechaCierrePeriodo`
 
 ### Documentación (PDF de entrega)
@@ -437,11 +436,19 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 ### **Responsable:** Andrea Maccan (`amaccan`)
 - [x] Restringir acceso a secciones (cards y navegación) según rol `admin`, `liquidador` o `cliente`.
 - [x] El rol `cliente` sólo podrá ver sus propias novedades.
+- [x] Deprecar `src/db/json.store.js`
+- [x] Fix css + deprecar id de tabla seguimiento
+- [ ] Actualización readme
+
+### **Responsable:** Cecilia Gómez (`cesugomez`)
+- [x] Unificación de css
+- [ ] Creación de usuarios a través de formulario, al que tendrá acceso sólo el admin
+
+### **Responsable:** Florencia Marcazzo (`Floh2023`) 
+- [ ] Configurar **MongoDB Atlas**
+
 
 ### **Responsable:** TBD
-- [ ] Deprecar `src/db/json.store.js` y su implementación, si siguiera existiendo
-- [ ] Creación de usuarios a través de formulario, al que tendrá acceso sólo el admin
-- [ ] Configurar **MongoDB Atlas**
 - [ ] Desplegar el proyecto (Render, Railway, etc.)
 - [ ] Diagramas: casos de uso, diagrama de clases, diagrama de secuencia, modelo ER
 - [ ] Documentación de pruebas (objetivo, procedimiento, resultados)

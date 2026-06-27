@@ -11,7 +11,6 @@ block content
     table.data-table
       thead
         tr
-          th ID
           th Novedad Relacionada
           th Empleado / Empresa
           th Fecha
@@ -22,7 +21,6 @@ block content
         if seguimientos && seguimientos.length > 0
           each seg in seguimientos
             tr
-              td(style="font-family: monospace; font-size: 11px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;")= seg._id || seg.id
               td
                 if seg.novedad
                   a(href=`/novedades/${seg.novedad.id}` style="color: #ff79c6; text-decoration: none; font-weight: bold;")= seg.novedad.tipo

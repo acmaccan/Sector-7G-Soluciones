@@ -21,6 +21,7 @@ gap: 16px;
 main {
 padding: 40px;
 display: flex;
+flex-direction: column;
 justify-content: center;
 }
 
