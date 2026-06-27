@@ -1,84 +1,175 @@
-# Talento Evolutivo S.A. API (Backend)
+# Talento Evolutivo S.A. - Backend API
 
-API REST en Node.js + Express para seguimiento administrativo del proceso de liquidacion de haberes: empresas, empleados, novedades, seguimientos, auditoria e indicadores.
+API REST empresarial para gestión integral del proceso de liquidación de haberes. Sistema modular construido con arquitectura **MVC** que integra seguimiento administrativo de empresas, empleados, novedades, auditoría e indicadores operativos.
 
-- Módulos base (`Empresa`, `Empleado`) persisten en MongoDB (Mongoose).
-- El resto de módulos continúa con persistencia local JSON.
+## Tabla de Contenidos
 
-## Quickstart
+- [Stack Tecnológico](#stack-tecnológico)
+- [Arquitectura](#arquitectura)
+- [Requisitos Previos](#requisitos-previos)
+- [Instalación y Configuración](#instalación-y-configuración)
+- [Entidades del Sistema](#entidades-del-sistema)
+- [Endpoints API](#endpoints-api)
+- [Base de Datos](#base-de-datos)
+- [Ejemplos de Uso](#ejemplos-de-uso)
 
-Desde `Sector-7G-Soluciones/backend/`:
+## Stack Tecnológico
+
+| Componente | Tecnología |
+|-----------|-----------|
+| **Runtime** | Node.js |
+| **Framework Web** | Express.js |
+| **Base de Datos** | MongoDB (Mongoose ODM) |
+| **Autenticación** | bcrypt + express-session |
+| **Control de Acceso** | Role-Based Access Control (RBAC) |
+| **Serialización** | JSON |
+
+## Arquitectura
+
+Implementamos el patrón **MVC (Model-View-Controller)**:
+
+```
+├── routes/          → Definición de endpoints y ruteo
+├── controllers/     → Manejo de requests/responses
+├── services/        → Lógica de negocio y validaciones
+├── models/          → Esquemas Mongoose (MongoDB)
+├── db/              → Persistencia (MongoDB)
+└── middleware/      → Autenticación, autorización, validaciones
+```
+
+### Flujo de Solicitud
+
+```
+Request → Route → Middleware (Auth/Validation) → Controller → Service → Model/DB → Response
+```
+
+## Requisitos Previos
+
+- **Node.js**: v16+
+- **npm** o **yarn**
+- **MongoDB**: Instalado localmente para desarrollo
+- **Variables de entorno**: `.env` configurado (ver `.env.example`)
+
+## Instalación y Configuración
+
+### 1. Clonar y navegar al proyecto
+
+```bash
+cd Sector-7G-Soluciones/backend
+```
+
+### 2. Instalar dependencias
 
 ```bash
 npm install
-npm start
 ```
 
-Base URL:
+### 3. Configurar variables de entorno
 
-```text
-http://localhost:3000
+Crear archivo `.env` en la raíz del proyecto `backend/`:
+
+```env
+# Servidor
+PORT=3000
+NODE_ENV=development
+
+# MongoDB Local (Desarrollo)
+MONGODB_URI=mongodb://localhost:27017/talento-evolutivo
+
+# MongoDB Atlas (Producción) - Descomenta cuando sea necesario
+# MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/talento-evolutivo?retryWrites=true&w=majority
+
+# Sesión
+SESSION_SECRET=tu_clave_secreta_aqui
 ```
 
-Health / root:
+### 4. MongoDB Local
 
+**macOS (Homebrew):**
 ```bash
-curl http://localhost:3000/
+brew install mongodb-community@7
+brew services start mongodb-community@7
 ```
 
-## MongoDB (local)
+**Linux:**
+```bash
+# Ubuntu/Debian
+sudo apt-get install -y mongodb
+sudo systemctl start mongod
+```
 
-Requisitos:
-- MongoDB corriendo en `mongodb://localhost:27017`
+**Windows:**
+- Descargar [MongoDB Community Server](https://www.mongodb.com/try/download/community)
+- Ejecutar el instalador
+- MongoDB se levantará como servicio automáticamente
 
-Instalación rápida:
-- macOS (Homebrew): `brew install mongodb-community@7` y luego `brew services start mongodb-community@7`
-- Linux: instalar `mongod` desde el repositorio oficial de MongoDB y levantar el servicio
-- Windows: descargar (MongoDB Community Server) https://www.mongodb.com/try/download/community, instalar y ejecutar `mongod`
-
-Variables de entorno:
-- Crear `.env` (ver `.env.example`)
-
-Seed (datos iniciales):
+### 5. Seed inicial de datos
 
 ```bash
 npm run seed
 ```
 
-## Datos y persistencia
+### 6. Iniciar el servidor
 
-- MongoDB (Empresa/Empleado): IDs tipo `ObjectId` (string) y baja lógica (`activo=false` o `activa=false`)
-- JSON (otros módulos): `src/db/data/*.json`
-
-## Respuestas y errores
-
-- Respuesta: JSON
-- Codigos comunes: `200`, `201`, `400`, `404`, `500`
-- Error tipico:
-
-```json
-{
-  "message": "Detalle del error"
-}
+```bash
+npm start
 ```
 
-## Endpoints
+Base URL: `http://localhost:3000`
+
+Health check:
+```bash
+curl http://localhost:3000/
+```
+
+## Entidades del Sistema
+
+### 1. Empresa
+- Representa la organización cliente
+- **Campos clave**: `nombre`, `cuit` (único), `rubro`, `contacto`
+- **Relaciones**: Múltiples `Empleados`, `Novedades`
+- **Estado**: Baja lógica (`activo: boolean`)
+
+### 2. Empleado
+- Personal de la empresa
+- **Campos clave**: `nombre`, `apellido`, `dni`, `puesto`, `email`, `empresaId`
+- **Relaciones**: Pertenece a `Empresa`, múltiples `Novedades`
+- **Estado**: Baja lógica
+
+### 3. Novedad
+- Eventos administrativos (licencias, cambios, etc.)
+- **Campos clave**: `tipo`, `descripcion`, `fecha`, `estado`, `empresaId`, `empleadoId`
+- **Estados válidos**: `pendiente`, `procesada`, `rechazada`
+- **Relaciones**: Pertenece a `Empresa` y `Empleado`, múltiples `Seguimientos`
+
+### 4. Seguimiento
+- Trazabilidad de novedades
+- **Campos clave**: `novedadId`, `fecha`, `responsable`, `comentario`
+- **Relaciones**: Pertenece a `Novedad`
+
+### 5. Auditoría
+- Registro de cambios y eventos del sistema
+- **Campos clave**: `entidad`, `accion`, `usuarioId`, `cambios`, `timestamp`
+- **Acciones registradas**: `creacion`, `modificacion`, `baja_logica`, `cambio_estado`
+
+### 6. Usuario
+- Usuarios del sistema con roles diferenciados
+- **Roles**: `admin`, `liquidador`, `cliente`
+- **Seguridad**: Contraseñas hasheadas con bcrypt
+
+## Endpoints API
 
 ### Empresas
 
-**GET** `/api/empresas`
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| **GET** | `/api/empresas` | Listar empresas (con filtro `?activo=true\|false`) |
+| **GET** | `/api/empresas/:id` | Obtener empresa con empleados y novedades |
+| **POST** | `/api/empresas` | Crear nueva empresa |
+| **PUT** | `/api/empresas/:id` | Actualizar empresa |
+| **DELETE** | `/api/empresas/:id` | Baja lógica |
 
-- Query params opcionales: `activo=true|false`
-- Devuelve una vista enriquecida con `empleados` y `novedades` relacionadas.
-
-**GET** `/api/empresas/:id`
-
-- Devuelve una empresa por id, incluyendo `empleados` y `novedades`.
-
-**POST** `/api/empresas`
-
-- Body requerido:
-
+**Body POST:**
 ```json
 {
   "nombre": "Orion Software SA",
@@ -88,31 +179,17 @@ npm run seed
 }
 ```
 
-- Notas:
-  - `cuit` debe ser unico (si existe devuelve `400`).
-
-**PUT** `/api/empresas/:id`
-
-- Body: al menos 1 campo.
-- Campos aceptados: `nombre`, `cuit`, `rubro`, `contacto`
-
-**DELETE** `/api/empresas/:id`
-
-- Baja logica (marca `activo=false`).
-- Restriccion: no permite baja si tiene empleados o novedades activas.
-
 ### Empleados
 
-**GET** `/api/empleados`
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| **GET** | `/api/empleados` | Listar empleados (filtros: `empresaId`, `activo`) |
+| **GET** | `/api/empleados/:id` | Obtener empleado |
+| **POST** | `/api/empleados` | Crear empleado |
+| **PUT** | `/api/empleados/:id` | Actualizar empleado |
+| **DELETE** | `/api/empleados/:id` | Baja lógica |
 
-- Query params opcionales: `empresaId=<number>`, `activo=true|false`
-
-**GET** `/api/empleados/:id`
-
-**POST** `/api/empleados`
-
-- Body requerido:
-
+**Body POST:**
 ```json
 {
   "nombre": "Juan",
@@ -120,163 +197,162 @@ npm run seed
   "dni": "40111222",
   "puesto": "Dev",
   "email": "juan@empresa.com",
-  "empresaId": 1
+  "empresaId": "ObjectId"
 }
 ```
 
-- Restriccion: `empresaId` debe existir y estar activa.
-
-**PUT** `/api/empleados/:id`
-
-- Body: al menos 1 campo.
-- Campos aceptados: `nombre`, `apellido`, `dni`, `puesto`, `email`, `empresaId`
-
-**DELETE** `/api/empleados/:id`
-
-- Baja logica.
-- Restriccion: no permite baja si tiene novedades activas asociadas.
-
 ### Novedades
 
-**GET** `/api/novedades`
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| **GET** | `/api/novedades` | Listar novedades (filtros: `empresaId`, `estado`, `activo`) |
+| **GET** | `/api/novedades/:id` | Obtener novedad con seguimientos |
+| **POST** | `/api/novedades` | Crear novedad |
+| **PUT** | `/api/novedades/:id` | Actualizar novedad |
+| **DELETE** | `/api/novedades/:id` | Baja lógica |
 
-- Query params opcionales:
-  - `empresaId=<number>`
-  - `estado=pendiente|procesada|rechazada`
-  - `activo=true|false`
-- Devuelve una vista enriquecida con `empresa`, `empleado` y `seguimientos`.
-
-**GET** `/api/novedades/:id`
-
-**POST** `/api/novedades`
-
-- Body requerido:
-
+**Body POST:**
 ```json
 {
   "tipo": "Licencia",
   "descripcion": "Licencia por estudio",
   "fecha": "2026-04-15",
-  "empresaId": 1,
-  "empleadoId": 1
+  "estado": "pendiente",
+  "empresaId": "ObjectId",
+  "empleadoId": "ObjectId"
 }
 ```
-
-- Notas:
-  - `estado` opcional (si se envia, debe ser `pendiente|procesada|rechazada`).
-  - Validacion cruzada: el empleado debe pertenecer a la empresa y ambos deben estar activos.
-
-**PUT** `/api/novedades/:id`
-
-- Body: al menos 1 campo.
-- Campos aceptados: `tipo`, `descripcion`, `fecha`, `estado`, `empresaId`, `empleadoId`
-- Si cambia `estado`, se registra auditoria de cambio de estado.
-
-**DELETE** `/api/novedades/:id`
-
-- Baja logica.
-- Restriccion: no permite baja si tiene seguimientos activos.
 
 ### Seguimientos
 
-**GET** `/api/seguimientos`
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| **GET** | `/api/seguimientos` | Listar seguimientos (filtros: `novedadId`, `empresaId`, `activo`) |
+| **GET** | `/api/seguimientos/:id` | Obtener seguimiento |
+| **POST** | `/api/seguimientos` | Crear seguimiento |
+| **PUT** | `/api/seguimientos/:id` | Actualizar seguimiento |
+| **DELETE** | `/api/seguimientos/:id` | Baja lógica |
 
-- Query params opcionales:
-  - `empresaId=<number>` (filtra por empresa a traves de la novedad)
-  - `novedadId=<number>`
-  - `activo=true|false`
-- Devuelve una vista enriquecida con `novedad`, `empleado` y `empresa`.
+### Auditoría
 
-**GET** `/api/seguimientos/:id`
-
-**POST** `/api/seguimientos`
-
-- Body requerido:
-
-```json
-{
-  "novedadId": 1,
-  "fecha": "2026-04-15",
-  "responsable": "Mesa operativa",
-  "comentario": "Seguimiento inicial"
-}
-```
-
-- Restriccion: `novedadId` debe existir y estar activa.
-
-**PUT** `/api/seguimientos/:id`
-
-- Body: al menos 1 campo.
-- Campos aceptados: `novedadId`, `fecha`, `responsable`, `comentario`
-
-**DELETE** `/api/seguimientos/:id`
-
-- Baja logica.
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| **GET** | `/auditoria` | Listar registros de auditoría (filtros: `entidad`, `accion`) |
 
 ### Reportes
 
-**GET** `/resumen` o `/api/resumen`
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| **GET** | `/resumen` | Indicadores operativos (empresas, empleados, pendientes) |
 
-- Devuelve indicadores operativos (empresas activas, empleados activos, pendientes, etc.).
+## Base de Datos
 
-### Auditoria
+### MongoDB - Desarrollo Local
 
-**GET** `/auditoria` o `/api/auditoria`
-
-- Query params opcionales: `entidad=<string>`, `accion=<string>`
-- Entidades comunes: `empresa`, `empleado`, `novedad`, `seguimiento`
-- Acciones comunes: `creacion`, `modificacion`, `baja_logica`, `cambio_estado`
-
-## Pruebas rapidas (curl)
+Verificar que el servicio está activo:
 
 ```bash
-curl http://localhost:3000/api/empresas/1
-curl http://localhost:3000/api/novedades/1
-curl "http://localhost:3000/api/novedades?empresaId=1&estado=pendiente"
-curl "http://localhost:3000/api/auditoria?entidad=novedad"
+# macOS
+brew services list | grep mongodb
+
+# Linux
+sudo systemctl status mongod
+
+# Windows
+Get-Service MongoDB
 ```
 
-## Arquitectura (breve)
+Conectar con MongoDB Compass o shell:
+```bash
+mongosh mongodb://localhost:27017
+```
 
-- `routes`: endpoints
-- `controllers`: request/response
-- `services`: reglas de negocio y validaciones cruzadas
-- `db`: acceso a MongoDB (Mongoose) y persistencia JSON híbrida
+### MongoDB - Producción (Atlas)
+
+Cuando estés listo para desplegar:
+
+1. Actualizar `.env`:
+```env
+MONGODB_URI=mongodb+srv://usuario:password@cluster.mongodb.net/talento-evolutivo?retryWrites=true&w=majority
+```
+
+2. El código se conectará automáticamente a MongoDB Atlas sin cambios adicionales.
+
+### Modelos Mongoose
+
+Todas las entidades usan Mongoose con validaciones nativas:
+- Campos únicos (`CUIT`)
+- Enumeraciones (`estado: enum`)
+- Referencias entre colecciones (`populate`)
+- Índices para optimización de queries
+
+## Ejemplos de Uso
+
+### Health Check
+```bash
+curl http://localhost:3000/
+```
+
+### Listar empresas activas
+```bash
+curl "http://localhost:3000/api/empresas?activo=true"
+```
+
+### Crear empresa
+```bash
+curl -X POST http://localhost:3000/api/empresas \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre": "Tech Solutions",
+    "cuit": "30-12345678-9",
+    "rubro": "Consultoría IT",
+    "contacto": "info@techsol.com"
+  }'
+```
+
+### Obtener novedades pendientes
+```bash
+curl "http://localhost:3000/api/novedades?estado=pendiente&empresaId=<ObjectId>"
+```
+
+### Listar auditoría por entidad
+```bash
+curl "http://localhost:3000/api/auditoria?entidad=novedad&accion=cambio_estado"
+```
+
+### Obtener resumen operativo
+```bash
+curl http://localhost:3000/api/resumen
+```
+
+## Control de Acceso (RBAC)
+
+El sistema implementa tres roles de usuario:
+
+| Rol | Permisos |
+|-----|----------|
+| **admin** | Administración total, gestión de usuarios, auditoría |
+| **liquidador** | CRUD completo en empresas, empleados, novedades, liquidaciones |
+| **cliente** | Visualización restringida y enfocada |
+
+Los permisos se validan en middleware antes de cada operación sensible.
+
+## Convenciones del Proyecto
+
+- **IDs MongoDB**: String `ObjectId` (automático)
+- **Baja lógica**: Campo booleano `activo` o `activa`
+- **Timestamps**: ISO 8601 (UTC)
+- **Respuestas**: JSON estándar con `message` en errores
+- **Status HTTP**: `200`, `201`, `400`, `404`, `500`
+
+## Próximas Mejoras
+
+- [ ] Sistema de alertas automáticas (Email con Nodemailer)
+- [ ] Notificaciones por SMS/WhatsApp (Twilio)
+- [ ] Colas de procesamiento asíncrono (BullMQ + Redis)
+- [ ] Documentación OpenAPI/Swagger
+- [ ] Tests automatizados (Jest/Mocha)
 
 ---
 
-## Requerimientos Funcionales Cubiertos (Mejoras de la Segunda Entrega)
-
-El sistema ha sido mejorado e integrado con persistencia robusta y mecanismos de seguridad avanzados:
-
-1. **Uso de Bases de Datos en la Nube y Locales (MongoDB + Mongoose):**
-   - Migración de las entidades principales (`Empresa`, `Empleado`, `Socio`, `Liquidación` y `Auditoría`) a MongoDB.
-   - Definición de esquemas rigurosos mediante Mongoose, permitiendo validaciones nativas de campos (enums, valores mínimos/máximos, valores únicos) e integridad referencial (`ref` y `populate`).
-   - Preparado para desplegarse fácilmente en **MongoDB Atlas** configurando la variable `MONGODB_URI` en el archivo `.env`.
-
-2. **Soporte para Múltiples Roles de Usuarios (Control de Acceso):**
-   - Implementación de tres roles de usuarios diferenciados:
-     - `admin`: Permisos de administración total (incluyendo creación de usuarios y acceso a todas las secciones).
-     - `operador`: Acceso a operaciones normales (empresas, empleados, novedades, liquidaciones).
-     - `cliente`: Visualización restringida y enfocada.
-   - Vistas dinámicas en Pug que adaptan la barra de navegación y las opciones del panel de control de acuerdo con el rol guardado en la sesión.
-
-3. **Encriptación de Datos Sensibles y Seguridad:**
-   - **Hasheo de Contraseñas:** Las contraseñas se almacenan de forma segura en la base de datos utilizando hasheo criptográfico unidireccional con **bcrypt** (factor de costo 10).
-   - **Protección de Sesión:** Manejo de sesiones mediante cookies seguras y firmadas usando **express-session** para restringir el acceso a rutas protegidas (`requireAuth`).
-
----
-
-## Requerimientos Futuros (Justificación Técnica)
-
-### Mejora 4: Sistema de Alertas Automáticas (Email y SMS)
-Como propuesta de expansión para la optimización de procesos de la consultora, se plantea el desarrollo de un **módulo de notificaciones en tiempo real** cuando se detecten eventos críticos (por ejemplo, novedades marcadas en estado "rechazada" o de prioridad "urgente").
-
-* **Justificación de Negocio:**
-  - Evita retrasos en el flujo administrativo de liquidaciones, notificando de inmediato al responsable o al empleado cuando una documentación es rechazada o requiere atención inmediata.
-* **Implementación Técnica Propuesta:**
-  - **Servicios de Terceros:**
-    - **Nodemailer:** Utilizando un servicio SMTP (como Gmail, SendGrid o AWS SES) para el envío de notificaciones detalladas por correo electrónico con formatos HTML y adjuntos.
-    - **Twilio (SMS/WhatsApp):** Para notificaciones de prioridad crítica enviadas directamente a los teléfonos móviles de los involucrados.
-  - **Patrón de Eventos (Event-Driven Architecture):**
-    - Se propone usar un emisor de eventos (`EventEmitter` nativo de Node.js) o colas de mensajería (como BullMQ con Redis) para procesar las notificaciones de forma asíncrona. Esto evita ralentizar el hilo principal de peticiones del servidor web cuando se realiza la inserción de registros.
+**Desarrollado para Talento Evolutivo S.A. - 2026**

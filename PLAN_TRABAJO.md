@@ -438,7 +438,7 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 - [x] El rol `cliente` sólo podrá ver sus propias novedades.
 - [x] Deprecar `src/db/json.store.js`
 - [x] Fix css + deprecar id de tabla seguimiento
-- [ ] Actualización readme
+- [x] Actualización readme
 
 ### **Responsable:** Cecilia Gómez (`cesugomez`)
 - [x] Unificación de css
