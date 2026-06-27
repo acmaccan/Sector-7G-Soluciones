@@ -439,6 +439,7 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 - [x] Deprecar `src/db/json.store.js`
 - [x] Fix css + deprecar id de tabla seguimiento
 - [x] Actualización readme
+- [ ] Documentación del proyecto
 
 ### **Responsable:** Cecilia Gómez (`cesugomez`)
 - [x] Unificación de css
