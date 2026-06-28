@@ -1,20 +1,8 @@
 extends ../layout
 
 block content
-  style.
-    .container { width: 100%; max-width: 600px; margin: 0 auto; }
-    .card-form { background-color: #2a2a40; padding: 30px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-    .card-form h1 { color: #50fa7b; margin-top: 0; text-align: center; }
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; color: #8be9fd; font-weight: bold; margin-bottom: 8px; font-size: 0.9em; }
-    .form-control { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #44475a; background-color: #1e1e2f; color: #f8f8f2; box-sizing: border-box; }
-    .form-control:focus { outline: none; border-color: #bd93f9; }
-    .btn-submit { width: 100%; background-color: #ff79c6; color: #282a36; padding: 12px; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; }
-    .btn-submit:hover { background-color: #ff92d0; }
-    .btn-volver { display: inline-block; margin-bottom: 20px; color: #6272a4; text-decoration: none; font-weight: bold; }
-    .btn-volver:hover { color: #f8f8f2; }
 
-  .container
+  .container-form
     a.btn-volver(href="/empresas") Cancelar y volver
 
     .card-form
@@ -51,7 +39,7 @@ block content
           label(for="fechaCierrePeriodo") Fecha cierre período (1 a 28):
           input#fechaCierrePeriodo.form-control(type="number", min="1", max="28", name="fechaCierrePeriodo", value=empresa ? empresa.fechaCierrePeriodo : '')
 
-        button.btn-submit(type="submit")= empresa ? 'Guardar Cambios' : 'Registrar Empresa'
+        button.btn-guardar(type="submit")= empresa ? 'Guardar Cambios' : 'Registrar Empresa'
 
   //- Lógica de cliente para enviar los datos
   script.

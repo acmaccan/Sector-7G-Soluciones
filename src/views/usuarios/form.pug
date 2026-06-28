@@ -1,99 +1,38 @@
 extends ../layout
 
 block content
-  .container.mt-5
-    .row.justify-content-center
-      .col-md-6
-        .card.shadow-sm
-          .card-header.bg-dark.text-white
-            h4.mb-0= usuarioData ? 'Editar Usuario' : 'Registrar Nuevo Usuario'
-          .card-body
-            //- Si hay usuarioData la acción va a editar/, sino a nuevo/
-            form(action=usuarioData ? `/usuarios/form/${usuarioData.id}` : "/usuarios/form" method="POST")  
-              .mb-3
-                label.form-label(for="usuario") Nombre de Usuario
-                input#usuario.form-control(type="text" name="usuario" required value=usuarioData ? usuarioData.usuario : '' placeholder="ej: jsmith")
-              
+  .container-form
+    a.btn-volver(href="/usuarios") Cancelar y volver
+    .card-form
+      h1= usuarioData ? 'Editar Usuario' : 'Registrar Nuevo Usuario'
+ 
+        //- Si hay usuarioData la acción va a editar, sino a crear uno nuevo
+      form(action=usuarioData ? `/usuarios/form/${usuarioData.id}` : "/usuarios/form" method="POST")  
+        .form-group 
+          label(for="usuario") Nombre de Usuario
+          input#usuario.form-control(type="text" name="usuario" required value=usuarioData ? usuarioData.usuario : '' placeholder="ej: jsmith")
+          
 
-              .mb-3
-                label.form-label(for="password") Contraseña
-                input#password.form-control(type="password" name="password" required=!usuarioData placeholder=usuarioData ? "Dejar en blanco para no modificar" : "********")
-              
-
-              .mb-3
-                label.form-label(for="rol") Rol del Sistema
-                select#rol.form-select(name="rol" required)
-                  option(value="" disabled=!usuarioData selected=!usuarioData) Seleccione un rol...
-                  option(value="cliente" selected=usuarioData && usuarioData.rol === 'cliente') Cliente
-                  option(value="admin" selected=usuarioData && usuarioData.rol === 'admin') Administrador
-
-
-              .mb-3
-                label.form-label(for="empresa") Empresa (Filtro)
-                select#empresa.form-select
-                  option(value="" selected=!empleadoData) Seleccione la empresa
-                  each empresa in empresas
-                    option(value=empresa.id selected=empleadoData && (empleadoData.empresaId === empresa.id || empleadoData.empresa === empresa.id))= empresa.nombre
-
-              .mb-3
-                label.form-label(for="empleadoId") Empleado
-                select#empleadoId.form-select(name="empleadoId" required disabled=!usuarioData)
-                  if usuarioData && empleadoData
-                    option(value=empleadoData.id selected)= `${empleadoData.nombre} ${empleadoData.apellido}`
-                  else
-                    option(value="" disabled selected) Seleccione primero una empresa...
-
-              .d-flex.justify-content-between.mt-4
-                a.btn.btn-outline-secondary(href="/usuarios") Cancelar
-                button.btn.btn-success(type="submit")= usuarioData ? 'Guardar Cambios' : 'Registrar Usuario'
-
-  //- JS para filtrar empleados
-  script.
-    const empresaSelect = document.getElementById('empresa');
-    const empleadoSelect = document.getElementById('empleadoId');
-
-
-    async function cargarEmpleados(empresaId, empleadoSeleccionadoId = null) {
-      empleadoSelect.innerHTML = '<option value="" disabled selected>Cargando empleados...</option>';
-      
-      try {
-        const response = await fetch(`/api/empleados?empresaId=${empresaId}`);
-        if (!response.ok) throw new Error();
-        const empleados = await response.json();
-
-        empleadoSelect.innerHTML = '<option value="" disabled selected>Seleccione un empleado...</option>';
+        .form-group
+          label.form-label(for="password") Contraseña
+          input#password.form-control(type="password" name="password" required=!usuarioData placeholder=usuarioData ? "Dejar en blanco para no modificar" : "********")
         
-        if(empleados.length === 0) {
-          empleadoSelect.innerHTML = '<option value="" disabled selected>No hay empleados en esta empresa</option>';
-          empleadoSelect.disabled = true;
-          return;
-        }
 
-        empleados.forEach(emp => {
-          const option = document.createElement('option');
-          option.value = emp.id;
-          option.textContent = `${emp.nombre} ${emp.apellido}`;
-          if (empleadoSeleccionadoId && emp.id === empleadoSeleccionadoId) {
-            option.selected = true;
-          }
-          empleadoSelect.appendChild(option);
-        });
+        .form-group
+          label.form-label(for="rol") Rol del Sistema
+          select#rol.form-control(name="rol" required)
+            option(value="" disabled=!usuarioData selected=!usuarioData) Seleccione un rol...
+            option(value="cliente" selected=usuarioData && usuarioData.rol === 'cliente') Cliente
+            option(value="admin" selected=usuarioData && usuarioData.rol === 'admin') Administrador
+            option(value="liquidador" selected=usuarioData && usuarioData.rol === 'liquidador') Liquidador
 
-        empleadoSelect.disabled = false;
-      } catch (err) {
-        empleadoSelect.innerHTML = '<option value="" disabled selected>Error al cargar</option>';
-      }
-    }
 
-    empresaSelect.addEventListener('change', (e) => {
-      if (!e.target.value) {
-        empleadoSelect.innerHTML = '<option value="" disabled selected>Seleccione primero una empresa...</option>';
-        empleadoSelect.disabled = true;
-        return;
-      }
-      cargarEmpleados(e.target.value);
-    });
+        .form-group
+          label.form-label(for="empresa") Empresa (Filtro)
+          select#empresa.form-control(name="empresaId" required)
+            option(value="" disabled=!usuarioData selected=!usuarioData) Seleccione la empresa
+            each empresa in empresas
+              option(value=empresa.id selected=usuarioData && String(usuarioData.empresaId) === String(empresa.id))= empresa.nombre
 
-    if (empresaSelect.value && "#{usuarioData ? usuarioData.empleadoId : ''}") {
-      cargarEmpleados(empresaSelect.value, "#{usuarioData ? usuarioData.empleadoId : ''}");
-    }
+        
+        button.btn-guardar(type="submit")= usuarioData ? 'Guardar Cambios' : 'Registrar Usuario'

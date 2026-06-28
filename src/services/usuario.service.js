@@ -11,12 +11,9 @@ export const getUsuarioById = async (id) => await usuarioDb.getById(id);
 export const createUsuario = async (userData) => {
   const hashedPassword = await bcrypt.hash(userData.password, 10);
   
-  const newUser = new Usuario({
-    ...userData,
-    password: hashedPassword
-  });
+  userData.password = hashedPassword;
   
-  return await newUser.save();
+  return await usuarioDb.create(userData);
 };
 
 /* Actualizar datos de usuario */
@@ -28,5 +25,5 @@ export const updateUsuario = async (id, userData) => {
     delete userData.password; 
   }
 
-  return await Usuario.findByIdAndUpdate(id, userData, { new: true });
+  return await usuarioDb.update(id, userData);
 };

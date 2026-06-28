@@ -1,23 +1,9 @@
 extends ../layout
 
 block content
-  style.
-    .container { width: 100%; max-width: 800px; margin: 0 auto; }
-    .card { background-color: #2a2a40; border-radius: 10px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-    h1 { color: #50fa7b; margin-top: 0; margin-bottom: 30px; border-bottom: 1px solid #44475a; padding-bottom: 15px; }
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; color: #8be9fd; margin-bottom: 8px; font-weight: bold; font-size: 14px; }
-    .form-control { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #44475a; background-color: #1e1e2f; color: #f8f8f2; box-sizing: border-box; }
-    .form-control:focus { outline: none; border-color: #bd93f9; }
-    .btn-guardar { background-color: #50fa7b; color: #282a36; padding: 12px 25px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px; margin-right: 10px; }
-    .btn-guardar:hover { background-color: #40c863; }
-    .btn-cancelar { background-color: #44475a; color: #f8f8f2; padding: 12px 25px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block; }
-    .btn-cancelar:hover { background-color: #6272a4; }
-    .form-row { display: flex; gap: 20px; }
-    .form-row .form-group { flex: 1; }
 
-  .container
-    .card
+  .container-form
+    .card-form
       h1= titulo
       
       form#socioForm

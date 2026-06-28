@@ -18,7 +18,6 @@ block content
     table.data-table
       thead
           th Usuario
-          th Nombre y Apellido
           th Empresa
           th Rol
           th Acciones
@@ -30,7 +29,6 @@ block content
           each usr in usuarios
             tr
               td= usr.usuario
-              td= usr.nombreCompleto
               td= usr.empresaNombre
               td
                 span(class=usr.rol === 'admin' ? 'text-danger fw-bold' : 'text-primary')= usr.rol.toUpperCase()
