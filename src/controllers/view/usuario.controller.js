@@ -44,7 +44,7 @@ class  usuarioViewController {
         const { usuario, password, rol, empresaId } = req.body;
 
         if (id) {
-            await updateUsuario(id, { usuario, rol, empresaId });
+            await updateUsuario(id, { usuario, password, rol, empresaId });
         } else {
             await createUsuario({ usuario, password, rol, empresaId });
         }

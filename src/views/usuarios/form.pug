@@ -10,8 +10,7 @@ block content
       form(action=usuarioData ? `/usuarios/form/${usuarioData.id}` : "/usuarios/form" method="POST")  
         .form-group 
           label(for="usuario") Nombre de Usuario
-          input#usuario.form-control(type="text" name="usuario" required value=usuarioData ? usuarioData.usuario : '' placeholder="ej: jsmith")
-          
+          input#usuario.form-control(type="text" name="usuario" autocomplete="off" required value=usuarioData ? usuarioData.usuario : '' placeholder="ej: jgomez")
 
         .form-group
           label.form-label(for="password") Contraseña
