@@ -8,6 +8,7 @@ export const MODULES_BY_ROLE = {
     { nombre: 'Socios',        ruta: '/socios',        desc: 'Administración del directorio de socios y participaciones.' },
     { nombre: 'Reportes',      ruta: '/resumen',       desc: 'Indicadores clave, resúmenes y tablas de impacto visual.' },
     { nombre: 'Auditoría',     ruta: '/auditoria',     desc: 'Registro histórico de acciones y trazabilidad del sistema.' },
+    { nombre: 'Usuarios',      ruta: '/usuarios'  ,    desc: 'Administración de usuarios.' },
   ],
   liquidador: [
     { nombre: 'Empresas',      ruta: '/empresas',      desc: 'Gestión de clientes, rubros y estado de cuentas.' },

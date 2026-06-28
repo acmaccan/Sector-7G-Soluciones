@@ -1,0 +1,38 @@
+extends ../layout
+
+block content
+
+  .container
+    .header-flex
+      div
+        h1= titulo || 'Panel de Administración'
+        p Gestioná los usuarios del sistema
+      div 
+        a.btn-nuevo(href="/usuarios/form") Crear Nuevo Usuario
+
+    if query && query.success
+      .alert.alert-success.alert-dismissible.fade.show(role="alert")
+        | Operación realizada con éxito.
+        button.btn-close(type="button" data-bs-dismiss="alert" aria-label="Close")
+
+    table.data-table
+      thead
+          th Usuario
+          th Nombre y Apellido
+          th Empresa
+          th Rol
+          th Acciones
+      tbody
+        if usuarios.length === 0
+          tr
+            td.text-center(colspan="5") No hay usuarios registrados en el sistema.
+        else
+          each usr in usuarios
+            tr
+              td= usr.usuario
+              td= usr.nombreCompleto
+              td= usr.empresaNombre
+              td
+                span(class=usr.rol === 'admin' ? 'text-danger fw-bold' : 'text-primary')= usr.rol.toUpperCase()
+              td
+                a.btn-accion.btn-editar(href=`/usuarios/form/${usr.id}`) Editar

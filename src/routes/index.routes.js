@@ -6,10 +6,12 @@ import { viewRouter as novedadesView,      apiRouter as novedadesApi      } from
 import { viewRouter as seguimientosView,   apiRouter as seguimientosApi   } from "./seguimientos.routes.js";
 import { viewRouter as liquidacionesView,  apiRouter as liquidacionesApi  } from "./liquidaciones.routes.js";
 import { viewRouter as auditoriaView,      apiRouter as auditoriaApi      } from "./auditoria.routes.js";
+import { viewRouter as usuariosView } from "./usuarios.routes.js";
 import { router as resumenRouter } from "./resumen.routes.js";
 import { obtenerResumen } from "../services/reporte.service.js";
 import { asyncHandler } from "../libs/asyncHandler.js";
 import { MODULES_BY_ROLE } from "../middlewares/auth.middleware.js";
+
 
 const router = Router();
 
@@ -31,6 +33,8 @@ router.use("/seguimientos",  seguimientosView);
 router.use("/liquidaciones", liquidacionesView);
 router.use("/auditoria",     auditoriaView);
 router.use("/resumen",       resumenRouter);
+router.use("/usuarios",      usuariosView);
+
 
 // ── API JSON ──────────────────────────────────────────────────────────────────
 router.get("/api", (req, res) => {
