@@ -60,6 +60,15 @@ El sistema deberá registrar el estado de las novedades (pendiente, procesada o 
 El sistema deberá organizarse siguiendo una arquitectura modular, validar datos obligatorios evitando registros incompletos o inconsistentes, responder utilizando códigos HTTP adecuados y diseñarse con criterios de mantenibilidad y escalabilidad. **El sistema deberá contar con un frontend de vistas server-side utilizando Pug**, integrando los módulos mediante formularios y listados que consuman los servicios ya implementados. La implementación deberá reflejar buenas prácticas de desarrollo orientadas a la construcción de sistemas reales y sostenibles en entornos organizacionales complejos. 
 
 ---
+# PRIMERA ENTREGA
+
+| Tareas principales                                          | 
+|-------------------------------------------------------------|
+| Auth (base), README, Setup Pug                              |
+| Empresa, Empleado, Novedad, Seguimiento, Auditoría, Reporte |
+| Liquidaciones + Socios                                      |
+| Todas las vistas Pug (todos los módulos)                    |
+| QA + Integración + Video                                    |
 
 ### **Sebastián Sosa** (`Animas-Ss`):
 
@@ -68,8 +77,6 @@ El sistema deberá organizarse siguiendo una arquitectura modular, validar datos
 - [x] Simplificación de `index.js` (configuración básica sin middleware de errores)
 - [x] Archivos placeholder (`index.txt`) en `config/`, `libs/`, `middlewares/`, `interfaces/`
 - [x] Configurar Pug en Express (`app.set('view engine', 'pug')`, carpeta `views/`)
-
----
 
 ### **Florencia Marcazzo** (`Floh2023`):
 
@@ -87,8 +94,6 @@ El sistema deberá organizarse siguiendo una arquitectura modular, validar datos
 - [x] Datos semilla: `empresas.json`, `empleados.json`, `novedades.json`, `seguimiento.json`, `auditoria.json`
 - [x] Documentación del API en `backend/README.md` (endpoints, ejemplos curl, arquitectura)
 
----
-
 ### **Andrea Maccan** (`amaccan`):
 
 - [x] Módulo Liquidaciones: modelo, controller, service, db, rutas con validaciones cruzadas (empresa y empleado activos y relacionados)
@@ -96,8 +101,6 @@ El sistema deberá organizarse siguiendo una arquitectura modular, validar datos
 - [x] Módulo Socios: modelo, controller, service, db, rutas con validaciones (DNI único, participación entre 1 y 100)
 - [x] Registrar auditoría en creación, modificación y baja lógica de socios
 - [x] Documentación OpenAPI 3.0: `docs/liquidaciones.yaml`, `docs/socios.yaml`, `docs/index.yaml` + bundle script (`npm run docs:bundle`)
-
----
 
 ### **Cecilia Gómez** (`cesugomez`):
 
@@ -113,8 +116,6 @@ El sistema deberá organizarse siguiendo una arquitectura modular, validar datos
 - [x] Vista de Reporte/Resumen: `views/reporte/resumen.pug` (indicadores y tabla de impacto)
 - [x] Actualizar todos los controllers para renderizar vistas Pug en lugar de responder JSON
 
----
-
 ### **Guillermo Aybar** (`GuilleGearts`):
 
 - [x] QA: Probar todos los endpoints y vistas con casos válidos e inválidos (Happy/Sad Path)
@@ -124,10 +125,8 @@ El sistema deberá organizarse siguiendo una arquitectura modular, validar datos
 - [x] **Coordinación de Entrega:** Creación de guion detallado por clips para la grabación del video
 - [x] Coordinar y editar el video grupal de 10 minutos (En proceso)
 
----
 
-## VIDEO - Responsabilidad Grupal (10 minutos)
-
+### Responsabilidad Grupal - Video 10 minutos
 - [x] Grabar demostración del flujo completo:
   - Crear empresa → Registrar empleados → Registrar novedades → Ver seguimiento → Ver reportes
 - [x] Mostrar: Estados de novedades (Pendiente → Procesada → Rechazada)
@@ -138,41 +137,9 @@ El sistema deberá organizarse siguiendo una arquitectura modular, validar datos
 - [x] Editar video (máximo 10 minutos)
 - [x] Publicar/compartir
 
----
-
-## ACCIONABLES CLAVE POR MÓDULO — Primera Entrega
-
-- [x] EMPRESA
-- [x] EMPLEADO
-- [x] NOVEDAD
-- [x] SEGUIMIENTO
-- [x] AUDITORÍA
-- [x] REPORTE
-- [x] LIQUIDACIÓN
-- [x] SOCIOS
-- [x] QA/VALIDACIÓN
 
 ---
-
-## DISTRIBUCIÓN FINAL — Primera Entrega
-
-| Integrante | Módulos | Estado |
-|------------|---------|--------|
-| Sebastián Sosa | Auth (base), README, Setup Pug | Completado |
-| Florencia Marcazzo | Empresa, Empleado, Novedad, Seguimiento, Auditoría, Reporte | Completado |
-| Andrea Maccan | Liquidaciones + Socios | Completado |
-| Cecilia Gómez | Todas las vistas Pug (todos los módulos) | Completado |
-| Guillermo Aybar | QA + Integración + Video | Completado |
-
----
-
----
-
----
-
-# SEGUNDA ENTREGA — Integración con MongoDB y Mongoose
-
-## Contexto de la segunda entrega
+# SEGUNDA ENTREGA
 
 La segunda entrega profundiza los contenidos de la materia incorporando **persistencia real con MongoDB** mediante **Mongoose**. El proyecto mantiene la arquitectura modular existente (rutas → controladores → servicios → modelos), pero se reemplaza la capa de persistencia en JSON (`json.store.js` y archivos `*.db.js`) por **schemas y modelos de Mongoose** que interactúan con una base de datos MongoDB local o en la nube (MongoDB Atlas).
 
@@ -187,22 +154,12 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 | Conexión DB | — | `mongoose.connect()` en `app.config.js` |
 | Variables de entorno | `PORT` | `PORT`, `MONGODB_URI` |
 
----
-
 ## Tareas de la Segunda Entrega por integrante
 
----
-
 ### **Florencia Marcazzo** (`Floh2023`) — Setup MongoDB + Schemas: Empresa, Empleado
-
 #### Setup y configuración
 - [X] Instalar dependencias: `mongoose`, `bcrypt`, `express-session` (`npm install mongoose bcrypt express-session`)
 - [X] Crear archivo `.env` con las variables necesarias:
-  ```
-  PORT=3000
-  MONGODB_URI=mongodb://localhost:27017/talento-evolutivo
-  SESSION_SECRET=una_clave_secreta_larga
-  ```
 - [X] Crear archivo `.env.example` con las mismas variables pero sin valores sensibles
 - [X] Agregar `.env` al `.gitignore`
 - [X] Actualizar `src/config/app.config.js`: leer variables de entorno, exportar función `connectDB()` con `mongoose.connect()`
@@ -210,8 +167,6 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 - [X] Agregar script `"seed": "node src/db/seed.js"` en `package.json`
 - [X] Actualizar `README.md` con instrucciones de instalación de MongoDB local y uso del seed
 - [ ] Eliminar `src/db/json.store.js` (ya no se usa en ningún módulo)
-
-> **Requisito previo para todo el equipo:** cada integrante debe tener instalado **MongoDB Community Server** ([mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)) con el servicio corriendo. Se recomienda **MongoDB Compass** para visualizar datos (útil para el video).
 
 #### Schemas y persistencia
 - [X] Crear `src/models/empresa.js`: `nombre`, `cuit`, `activa`, `convenio` (enum: `'general'`, `'docente'`, `'sanidad'`, `'comercio'`, `'otro'`), `fechaCierrePeriodo` (Number 1–28), `fechaAlta`, `timestamps`
@@ -237,7 +192,6 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 ---
 
 ### **Sebastián Sosa** (`Animas-Ss`) — Schemas: Novedad, Seguimiento + Vistas novedades/seguimientos
-
 #### Schemas y persistencia
 - [ ] Crear `src/models/novedad.js`: `empleadoId` (`ref: 'Empleado'`), `empresaId` (`ref: 'Empresa'`), `tipo`, `estado` (enum: `'pendiente'`, `'procesada'`, `'rechazada'`), `descripcion`, `timestamps`
 - [ ] Crear `src/models/seguimiento.js`: `novedadId` (`ref: 'Novedad'`), `estado`, `observacion`, `timestamps`
@@ -259,7 +213,6 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 ---
 
 ### **Andrea Maccan** (`amaccan`) — Autenticación completa (bcrypt + express-session)
-
 #### Schema y persistencia
 - [x] Crear `src/models/usuario.js`: `usuario` (único), `password` (hasheado con bcrypt), `rol` (enum: `'admin'`, `'operador'`, `'cliente'`), `timestamps`
 
@@ -272,8 +225,7 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
   - `POST /login`: llama al service, guarda `req.session.usuario`, redirige a `/`
   - `POST /logout`: destruye sesión, redirige a `/login`
 - [x] Completar `src/routes/auth.routes.js`: montar rutas de login/logout
-- [ ] Crear `src/controllers/view/usuario.controller.js`:
-  - `GET /usuarios/nuevo`: renderiza formulario de alta (solo admin)
+- [x] Crear `src/controllers/view/usuario.controller.js`:
   - `POST /usuarios`: crea usuario con password hasheado con `bcrypt.hash()`
 
 #### Middleware y protección de rutas
@@ -285,42 +237,26 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 #### Vistas de auth
 - [x] Crear `views/auth/login.pug`: formulario usuario/password, mensaje de error si credenciales incorrectas
 - [x] Agregar link de **Logout** en `views/layout.pug` (visible solo si hay sesión activa)
-- [ ] Crear `views/usuarios/form.pug`: formulario de alta de usuario con selector de rol (solo accesible para admin)
 
 #### Seed (sección propia)
 - [x] Agregar al `seed.js`: usuario **admin** y usuario **operador** con passwords hasheados con `bcrypt`
 
-**Entregables clave:**
-- `src/models/usuario.js` + `auth.service.js`, `auth.controller.js`, `auth.routes.js` completos
-- `auth.middleware.js` con `requireAuth`
-- Vistas `login.pug`, `layout.pug` (logout), `usuarios/form.pug`
-- Sección del seed con usuarios
-
----
-
 ### **Cecilia Gómez** (`cesugomez`) — Schemas: Liquidación, Socio + Vistas liquidaciones/socios + ajuste ObjectId global
 
 #### Schemas y persistencia
-- [ ] Crear `src/models/liquidacion.js`: `empleadoId` (`ref: 'Empleado'`), `empresaId` (`ref: 'Empresa'`), `periodo`, `totalBruto`, `totalNeto`, `activa`, `timestamps`
-- [ ] Crear `src/models/socio.js`: `nombre`, `apellido`, `dni` (único), `participacion` (1–100), `activo`, `timestamps`
-- [ ] Reescribir `src/db/liquidacion.db.js` con Mongoose, validaciones cruzadas con `findById`
-- [ ] Reescribir `src/db/socio.db.js` con Mongoose (índice único en `dni`)
+- [x] Crear `src/models/liquidacion.js`: `empleadoId` (`ref: 'Empleado'`), `empresaId` (`ref: 'Empresa'`), `periodo`, `totalBruto`, `totalNeto`, `activa`, `timestamps`
+- [x] Crear `src/models/socio.js`: `nombre`, `apellido`, `dni` (único), `participacion` (1–100), `activo`, `timestamps`
+- [x] Reescribir `src/db/liquidacion.db.js` con Mongoose, validaciones cruzadas con `findById`
+- [x] Reescribir `src/db/socio.db.js` con Mongoose (índice único en `dni`)
 
 #### Vistas
-- [ ] Actualizar `views/liquidaciones/`: usar `._id`, mostrar referencias populadas de empleado y empresa
-- [ ] Actualizar `views/socios/`: usar `._id`
-- [ ] Revisar `views/auditoria/` y `views/reporte/resumen.pug`: verificar IDs y campos
-- [ ] Probar el flujo visual completo en el navegador una vez que todos los `db.js` estén migrados
+- [x] Actualizar `views/liquidaciones/`: usar `._id`, mostrar referencias populadas de empleado y empresa
+- [x] Actualizar `views/socios/`: usar `._id`
+- [x] Revisar `views/auditoria/` y `views/reporte/resumen.pug`: verificar IDs y campos
+- [x] Probar el flujo visual completo en el navegador una vez que todos los `db.js` estén migrados
 
 #### Seed (sección propia)
-- [ ] Agregar al `seed.js` datos de prueba: **liquidaciones** (3–4) y **socios** (3–4)
-
-**Entregables clave:**
-- 2 schemas Mongoose (`liquidacion`, `socio`) + 2 `db.js` reescritos
-- Vistas de liquidaciones y socios actualizadas
-- Sección del seed completa
-
----
+- [x] Agregar al `seed.js` datos de prueba: **liquidaciones** (3–4) y **socios** (3–4)
 
 ### **Guillermo Aybar** (`GuilleGearts`) — Schema: Auditoría + Middleware de errores + QA + Docs + Video
 
@@ -353,85 +289,10 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 - [x] Mostrar: conexión a MongoDB en Compass, login/logout, flujo completo, un error manejado correctamente
 - [x] Subir a YouTube/Drive con permisos de visualización habilitados
 
-**Entregables clave:**
-- Schema `auditoria` + `auditoria.db.js` reescrito + `reporte.service.js` funcional
-- `error.middleware.js` actualizado para errores Mongoose
-- Reporte de QA documentado (sección en el PDF de entrega)
-- OpenAPI actualizado + README con requerimientos cubiertos/futuros
-- Video grupal publicado y con enlace compartido
-
----
-
-## Dependencias entre tareas (orden sugerido)
-
-```
-1. Florencia  →  Setup + connectDB + .env           (bloquea todo lo demás)
-               + schemas empresa/empleado + db.js
-               + seed base
-
-2. Sebastián  →  schemas novedad/seguimiento +       (depende de empresa/empleado de Florencia)
-               db.js + vistas novedades/seguimientos
-
-3. Andrea    →  schema usuario + auth completo      (depende de connectDB de Florencia)
-               (en paralelo con Sebastián)
-
-4. Cecilia    →  schemas liquidacion/socio +         (depende de empresa/empleado de Florencia)
-               db.js + vistas liquidaciones/socios
-
-5. Guillermo  →  schema auditoria + db.js +          (puede arrancar en paralelo con Cecilia)
-               error.middleware.js + QA + docs
-
-6. TODOS      →  Video                              (última etapa)
-```
-
----
-
-## Checklist de entrega — Segunda Entrega
-
-### Técnico
-- [x] La app conecta a MongoDB al iniciar (log de confirmación en consola)
-- [x] Todos los módulos usan Mongoose (ninguno sigue usando `json.store.js`)
-- [x] Los endpoints de relaciones usan `populate()` correctamente
-- [x] Los errores de Mongoose (`ValidationError`, `CastError`, clave duplicada) son manejados por el middleware
-- [x] El script `seed` carga datos de prueba correctamente (incluye usuarios admin y operador con passwords hasheados)
-- [x] Las vistas Pug funcionan correctamente con `ObjectId`
-- [x] Las rutas están protegidas por `requireAuth` (redirige a `/login` si no hay sesión)
-- [x] El login con bcrypt funciona correctamente
-- [x] El logout destruye la sesión y redirige a `/login`
-- [x] La vista de login muestra mensaje de error ante credenciales incorrectas
-- [x] Las empresas tienen campo `convenio` y `fechaCierrePeriodo`
-
-### Documentación (PDF de entrega)
-- [ ] Link al repositorio Git
-- [ ] Diagrama de modelos/relaciones Mongoose (opcional pero valorado)
-- [ ] Roles y responsabilidades actualizados para la segunda entrega
-- [ ] Bibliografía utilizada (docs de Mongoose, MongoDB, tutoriales)
-- [ ] Explicación del funcionamiento de la aplicación
-
-### Video
-- [ ] Cada integrante explica su participación
-- [ ] Se muestra la conexión a MongoDB (Compass o log)
-- [ ] Se muestra el flujo completo de la app
-- [ ] Se muestra manejo de errores
-- [ ] Enlace publicado con permisos de visualización
-
----
-
-## Distribución Segunda Entrega
-
-| Integrante | Tareas Segunda Entrega | Prioridad |
-|------------|------------------------|-----------|
-| Florencia Marcazzo | Setup MongoDB + schemas/db.js: `empresa`, `empleado` + vistas empresas/empleados + seed base | 🔴 Alta (bloquea todo) |
-| Sebastián Sosa | Schemas/db.js: `novedad`, `seguimiento` + vistas novedades/seguimientos + seed | 🔴 Alta (depende del setup) |
-| Andrea Maccan | Schema `usuario` + auth completo: bcrypt + session + middleware + controller + vistas login/usuario | 🔴 Alta (depende del setup) |
-| Cecilia Gómez | Schemas/db.js: `liquidacion`, `socio` + vistas liquidaciones/socios + seed | 🟡 Media (depende de empresa/empleado) |
-| Guillermo Aybar | Schema/db.js `auditoria` + reporte + `error.middleware.js` + QA + OpenAPI + docs + video | 🟡 Media (depende de todo) |
-
----
 
 ## TERCERA ENTREGA
 
-### Asignación
+### Tareas de la Tercera Entrega por integrante
 
 ### **Responsable:** Andrea Maccan (`amaccan`)
 - [x] Restringir acceso a secciones (cards y navegación) según rol `admin`, `liquidador` o `cliente`.
@@ -439,26 +300,25 @@ La segunda entrega profundiza los contenidos de la materia incorporando **persis
 - [x] Deprecar `src/db/json.store.js`
 - [x] Fix css + deprecar id de tabla seguimiento
 - [x] Actualización readme
-- [ ] Documentación del proyecto
+- [x] Documentación del proyecto
+- [x] Diagramas: casos de uso, diagrama de clases, diagrama de secuencia, modelo ER
+- [x] Bibliografía y fuentes consultadas
+- [x] Mención del uso de IA
+- [x] Explicación de decisiones técnicas
+- [x] Fixes de conexión sobre configuración de MongoDB Atlas y seed
 
 ### **Responsable:** Cecilia Gómez (`cesugomez`)
 - [x] Unificación de css
-- [ ] Creación de usuarios a través de formulario, al que tendrá acceso sólo el admin
+- [x] Creación de usuarios a través de formulario, al que tendrá acceso sólo el admin
 
 ### **Responsable:** Florencia Marcazzo (`Floh2023`) 
-- [ ] Configurar **MongoDB Atlas**
+- [x] Configurar **MongoDB Atlas**
 
 
 ### **Responsable:** TBD
 - [ ] Desplegar el proyecto (Render, Railway, etc.)
-- [ ] Diagramas: casos de uso, diagrama de clases, diagrama de secuencia, modelo ER
 - [ ] Documentación de pruebas (objetivo, procedimiento, resultados)
-- [ ] Bibliografía y fuentes consultadas
 - [ ] Conclusión grupal: qué aprendieron, dificultades, qué les interesó, qué reforzarían
-- [ ] Mención del uso de IA
-- [ ] Explicación de decisiones técnicas (ej: por qué se usó session en lugar de JWT)
-
----
 
 ## ACUERDO DE EQUIPO - Uso de Ramas en Git
 
